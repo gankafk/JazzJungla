@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jazz en la Jungla</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600&family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<header class="navbar transparent" id="navbar">
+  <nav class="navbar__inner container">
+
+    <a href="#hero" class="navbar__logo" aria-label="Jazz en la Jungla">
+      <span class="navbar__logo-text">
+        Jazz <span class="navbar__logo-accent">en la Jungla</span>
+      </span>
+    </a>
+
+    <!-- Menú desktop -->
+    <ul class="navbar__menu" role="menubar">
+      <li class="navbar__item">
+        <a href="#hero" class="navbar__link" data-es="Inicio" data-en="Home">Inicio</a>
+      </li>
+      <li class="navbar__item">
+        <a href="#about" class="navbar__link" data-es="Sobre el Proyecto" data-en="About">Sobre el Proyecto</a>
+      </li>
+      <li class="navbar__item">
+        <a href="#experience" class="navbar__link" data-es="La Experiencia" data-en="The Experience">La Experiencia <span class="nav-arrow">▾</span></a>
+        <ul class="dropdown">
+          <li><a href="#experience" data-es="Masterclases" data-en="Masterclasses">Masterclases</a></li>
+          <li><a href="#experience" data-es="Glamping" data-en="Glamping">Glamping</a></li>
+          <li><a href="#experience" data-es="Gastronomía" data-en="Cuisine">Gastronomía</a></li>
+          <li><a href="#experience" data-es="Jam Sessions" data-en="Jam Sessions">Jam Sessions</a></li>
+          <li><a href="#experience" data-es="Río y Naturaleza" data-en="River & Nature">Río y Naturaleza</a></li>
+        </ul>
+      </li>
+      <li class="navbar__item">
+        <a href="#artists" class="navbar__link" data-es="Artistas" data-en="Artists">Artistas</a>
+      </li>
+      <li class="navbar__item">
+        <a href="#location" class="navbar__link" data-es="Ubicación" data-en="Location">Ubicación</a>
+      </li>
+      <li class="navbar__item">
+        <a href="#booking" class="navbar__link" data-es="Booking" data-en="Booking">Booking <span class="nav-arrow">▾</span></a>
+        <ul class="dropdown">
+          <li><a href="#booking" data-es="Edición 1 – Feb 15-20" data-en="Edition 1 – Feb 15-20">Edición 1 – Feb 15-20</a></li>
+          <li><a href="#booking" data-es="Edición 2 – Feb 22-27" data-en="Edition 2 – Feb 22-27">Edición 2 – Feb 22-27</a></li>
+        </ul>
+      </li>
+      <li class="navbar__item">
+        <a href="#footer" class="navbar__link" data-es="Contacto" data-en="Contact">Contacto</a>
+      </li>
+    </ul>
+
+    <div class="navbar__actions">
+      <button class="lang-btn" id="lang-toggle-desktop" aria-label="Cambiar idioma">🇪🇸 ES | EN</button>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-expanded="false" aria-label="Abrir menú">
+      <span class="hbar"></span>
+      <span class="hbar"></span>
+      <span class="hbar"></span>
+    </button>
+  </nav>
+</header>
+
+<!-- Menú móvil -->
+<div class="mobile-menu" id="mobile-menu">
+  <ul>
+    <li><a href="#hero" onclick="closeMobile()" data-es="Inicio" data-en="Home">Inicio</a></li>
+    <li><a href="#about" onclick="closeMobile()" data-es="Sobre el Proyecto" data-en="About">Sobre el Proyecto</a></li>
+    <li>
+      <button onclick="toggleMobileSub(this)" aria-expanded="false">
+        <span data-es="La Experiencia" data-en="The Experience">La Experiencia</span> <span>▾</span>
+      </button>
+      <ul class="mobile-submenu" hidden>
+        <li><a href="#experience" onclick="closeMobile()" data-es="Masterclases" data-en="Masterclasses">Masterclases</a></li>
+        <li><a href="#experience" onclick="closeMobile()" data-es="Glamping" data-en="Glamping">Glamping</a></li>
+        <li><a href="#experience" onclick="closeMobile()" data-es="Gastronomía" data-en="Cuisine">Gastronomía</a></li>
+        <li><a href="#experience" onclick="closeMobile()" data-es="Jam Sessions" data-en="Jam Sessions">Jam Sessions</a></li>
+        <li><a href="#experience" onclick="closeMobile()" data-es="Río y Naturaleza" data-en="River & Nature">Río y Naturaleza</a></li>
+      </ul>
+    </li>
+    <li><a href="#artists" onclick="closeMobile()" data-es="Artistas" data-en="Artists">Artistas</a></li>
+    <li><a href="#location" onclick="closeMobile()" data-es="Ubicación" data-en="Location">Ubicación</a></li>
+    <li>
+      <button onclick="toggleMobileSub(this)" aria-expanded="false">
+        <span data-es="Booking" data-en="Booking">Booking</span> <span>▾</span>
+      </button>
+      <ul class="mobile-submenu" hidden>
+        <li><a href="#booking" onclick="closeMobile()" data-es="Edición 1 – Feb 15-20" data-en="Edition 1 – Feb 15-20">Edición 1 – Feb 15-20</a></li>
+        <li><a href="#booking" onclick="closeMobile()" data-es="Edición 2 – Feb 22-27" data-en="Edition 2 – Feb 22-27">Edición 2 – Feb 22-27</a></li>
+      </ul>
+    </li>
+    <li><a href="#footer" onclick="closeMobile()" data-es="Contacto" data-en="Contact">Contacto</a></li>
+    <li>
+      <div class="mobile-lang">
+        <button class="lang-btn" id="lang-toggle-mobile" aria-label="Cambiar idioma">🇪🇸 ES | EN</button>
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="overlay" id="overlay"></div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section id="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-badge">📍 <span data-es="Febrero 2027 · Costa Rica" data-en="February 2027 · Costa Rica">Febrero 2027 · Costa Rica</span></span>
+    <p class="hero-tagline"><span data-es="Música · Naturaleza · Transformación" data-en="Music · Nature · Transformation">Música · Naturaleza · Transformación</span></p>
+    <h1 class="hero-headline">Jazz en la Jungla</h1>
+    <p class="hero-sub"><span data-es="Un retiro de jazz íntimo en el corazón de Costa Rica con Cyrille Aimée" data-en="An intimate jazz retreat in the heart of Costa Rica with Cyrille Aimée">Un retiro de jazz íntimo en el corazón de Costa Rica con Cyrille Aimée</span></p>
+    <div class="hero-ctas">
+      <a href="#booking" class="btn btn--primary btn--lg"><span data-es="Reserva tu lugar" data-en="Reserve your spot">Reserva tu lugar</span></a>
+      <a href="#about" class="btn btn--outline-light btn--lg"><span data-es="Conoce más" data-en="Learn more">Conoce más</span></a>
+    </div>
+  </div>
+  <a href="#about" class="hero-scroll" aria-label="Bajar">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  </a>
+</section>
+
+<!-- ============================================================
+     ABOUT — SOBRE EL PROYECTO
+     ============================================================ -->
+<section id="about" class="section section--cream">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="section-label" data-es="Sobre el Proyecto" data-en="About the Project">Sobre el Proyecto</span>
+      <h2 data-es="¿Qué es Jazz en la Jungla?" data-en="What is Jazz en la Jungla?">¿Qué es Jazz en la Jungla?</h2>
+      <div class="divider"></div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-text from-left">
+        <p class="about-body" data-es="Jazz en la Jungla es una residencia artística única que fusiona la música de jazz con la inmensidad de la selva tropical costarricense. Durante seis días, un grupo íntimo de músicos y artistas se sumerge en un entorno donde la naturaleza se convierte en parte del proceso creativo." data-en="Jazz en la Jungla is a unique artistic residency that fuses jazz music with the vastness of the Costa Rican tropical jungle. For six days, an intimate group of musicians and artists immerses in an environment where nature becomes part of the creative process.">
+          Jazz en la Jungla es una residencia artística única que fusiona la música de jazz con la inmensidad de la selva tropical costarricense. Durante seis días, un grupo íntimo de músicos y artistas se sumerge en un entorno donde la naturaleza se convierte en parte del proceso creativo.
+        </p>
+        <p class="about-body" data-es="No es un curso convencional. Es un espacio diseñado para vivir en comunidad, compartir el arte, y conectar con algo más profundo: el ritmo de la naturaleza, la improvisación sin fronteras, y la presencia plena." data-en="This is not a conventional course. It is a space designed for communal living, sharing art, and connecting with something deeper: the rhythm of nature, borderless improvisation, and complete presence.">
+          No es un curso convencional. Es un espacio diseñado para vivir en comunidad, compartir el arte, y conectar con algo más profundo: el ritmo de la naturaleza, la improvisación sin fronteras, y la presencia plena.
+        </p>
+        <blockquote class="about-quote">
+          <p data-es='"La jungla te quita el ruido mental y te devuelve el oído."' data-en='"The jungle strips away the mental noise and gives you back your hearing."'>"La jungla te quita el ruido mental y te devuelve el oído."</p>
+          <cite>— Cyrille Aimée</cite>
+        </blockquote>
+      </div>
+
+      <div class="about-artist from-right">
+        <div class="about-img-frame">
+          <!-- IMAGE: assets/images/about/cyrille-portrait.jpg · 600×750px -->
+          <div class="img-placeholder" style="aspect-ratio:4/5">
+            <span>📷 assets/images/about/cyrille-portrait.jpg · 600×750px</span>
+          </div>
+        </div>
+        <div class="about-bio">
+          <div>
+            <div class="about-bio__name">Cyrille Aimée</div>
+            <div class="about-bio__role" data-es="Directora Artística" data-en="Artistic Director">Directora Artística</div>
+          </div>
+          <p class="about-bio__text" data-es="Internacionalmente reconocida por su voz inigualable y su dominio de la improvisación vocal, Cyrille Aimée ha actuado en los mejores festivales de jazz del mundo. Jazz en la Jungla es su proyecto más personal: un espacio para compartir su filosofía musical en contacto directo con la naturaleza." data-en="Internationally recognized for her incomparable voice and mastery of vocal improvisation, Cyrille Aimée has performed at the world's finest jazz festivals. Jazz en la Jungla is her most personal project: a space to share her musical philosophy in direct contact with nature.">
+            Internacionalmente reconocida por su voz inigualable y su dominio de la improvisación vocal, Cyrille Aimée ha actuado en los mejores festivales de jazz del mundo.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     EXPERIENCE — LA EXPERIENCIA
+     ============================================================ -->
+<section id="experience" class="section section--warm">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="section-label" data-es="La Experiencia" data-en="The Experience">La Experiencia</span>
+      <h2 data-es="Una semana que cambiará tu música" data-en="A week that will change your music">Una semana que cambiará tu música</h2>
+      <div class="divider divider--center"></div>
+      <p data-es="Todo está incluido para que puedas enfocarte completamente en tu arte." data-en="Everything is included so you can focus completely on your art.">Todo está incluido para que puedas enfocarte completamente en tu arte.</p>
+    </div>
+
+    <div class="exp-grid">
+      <div class="exp-card fade-in delay-1">
+        <!-- IMAGE: assets/images/experience/masterclass.jpg · 800×600px -->
+        <div class="img-placeholder" style="aspect-ratio:4/3;border-radius:0;border:none;border-bottom:2px dashed var(--jungle-bright)">
+          <span>assets/images/experience/masterclass.jpg · 800×600px</span>
+        </div>
+        <div class="exp-card__body">
+          <span class="exp-card__icon">🎵</span>
+          <h3 class="exp-card__title" data-es="Masterclases" data-en="Masterclasses">Masterclases</h3>
+          <div class="exp-card__divider"></div>
+          <p class="exp-card__desc" data-es="Clases magistrales con Cyrille Aimée y músicos invitados de talla internacional. Técnica vocal, improvisación, teoría aplicada y presencia escénica." data-en="Master classes with Cyrille Aimée and internationally acclaimed guest musicians. Vocal technique, improvisation, applied theory and stage presence.">Clases magistrales con Cyrille Aimée y músicos invitados de talla internacional.</p>
+        </div>
+      </div>
+
+      <div class="exp-card fade-in delay-2">
+        <!-- IMAGE: assets/images/experience/glamping.jpg · 800×600px -->
+        <div class="img-placeholder" style="aspect-ratio:4/3;border-radius:0;border:none;border-bottom:2px dashed var(--jungle-bright)">
+          <span>assets/images/experience/glamping.jpg · 800×600px</span>
+        </div>
+        <div class="exp-card__body">
+          <span class="exp-card__icon">⛺</span>
+          <h3 class="exp-card__title" data-es="Glamping en la Selva" data-en="Jungle Glamping">Glamping en la Selva</h3>
+          <div class="exp-card__divider"></div>
+          <p class="exp-card__desc" data-es="Tiendas bell tent espaciosas en medio de la jungla. Capacidad máxima: 30 participantes." data-en="Spacious bell tents in the middle of the jungle. Maximum capacity: 30 participants.">Tiendas bell tent espaciosas en medio de la jungla. Capacidad máxima: 30 participantes.</p>
+        </div>
+      </div>
+
+      <div class="exp-card fade-in delay-3">
+        <!-- IMAGE: assets/images/experience/meals.jpg · 800×600px -->
+        <div class="img-placeholder" style="aspect-ratio:4/3;border-radius:0;border:none;border-bottom:2px dashed var(--jungle-bright)">
+          <span>assets/images/experience/meals.jpg · 800×600px</span>
+        </div>
+        <div class="exp-card__body">
+          <span class="exp-card__icon">🌿</span>
+          <h3 class="exp-card__title" data-es="Gastronomía Local" data-en="Local Cuisine">Gastronomía Local</h3>
+          <div class="exp-card__divider"></div>
+          <p class="exp-card__desc" data-es="Tres comidas diarias preparadas con productos de la huerta y recetas locales." data-en="Three daily meals prepared with garden produce and local recipes.">Tres comidas diarias preparadas con productos de la huerta y recetas locales.</p>
+        </div>
+      </div>
+
+      <div class="exp-card fade-in delay-4">
+        <!-- IMAGE: assets/images/experience/jam-session.jpg · 800×600px -->
+        <div class="img-placeholder" style="aspect-ratio:4/3;border-radius:0;border:none;border-bottom:2px dashed var(--jungle-bright)">
+          <span>assets/images/experience/jam-session.jpg · 800×600px</span>
+        </div>
+        <div class="exp-card__body">
+          <span class="exp-card__icon">🎤</span>
+          <h3 class="exp-card__title" data-es="Jam Sessions" data-en="Jam Sessions">Jam Sessions</h3>
+          <div class="exp-card__divider"></div>
+          <p class="exp-card__desc" data-es="Sesiones nocturnas de improvisación junto a Cyrille y el faculty en El Nido." data-en="Nightly improvisation sessions alongside Cyrille and the faculty at El Nido.">Sesiones nocturnas de improvisación junto a Cyrille y el faculty en El Nido.</p>
+        </div>
+      </div>
+
+      <div class="exp-card fade-in delay-5">
+        <!-- IMAGE: assets/images/experience/river.jpg · 800×600px -->
+        <div class="img-placeholder" style="aspect-ratio:4/3;border-radius:0;border:none;border-bottom:2px dashed var(--jungle-bright)">
+          <span>assets/images/experience/river.jpg · 800×600px</span>
+        </div>
+        <div class="exp-card__body">
+          <span class="exp-card__icon">🌊</span>
+          <h3 class="exp-card__title" data-es="Río y Naturaleza" data-en="River & Nature">Río y Naturaleza</h3>
+          <div class="exp-card__divider"></div>
+          <p class="exp-card__desc" data-es="Acceso privado al río Machuca. Jardines, senderos, bonfire al atardecer." data-en="Private access to the Machuca River. Gardens, trails, and bonfire at sunset.">Acceso privado al río Machuca. Jardines, senderos, bonfire al atardecer.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ARTISTS — ARTISTAS
+     ============================================================ -->
+<section id="artists" class="section section--dark">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="section-label" data-es="Artistas" data-en="Artists">Artistas</span>
+      <h2 data-es="Conoce a los Artistas" data-en="Meet the Artists">Conoce a los Artistas</h2>
+      <div class="divider divider--center"></div>
+      <p data-es="Un faculty de talla internacional comprometido con tu crecimiento musical." data-en="A world-class faculty committed to your musical growth.">Un faculty de talla internacional comprometido con tu crecimiento musical.</p>
+    </div>
+
+    <div class="featured">
+      <div class="featured__img-wrap from-left">
+        <!-- IMAGE: assets/images/artists/cyrille-aimee.jpg · 800×900px -->
+        <div class="img-placeholder" style="aspect-ratio:4/5;border-radius:var(--radius-xl)">
+          <span>assets/images/artists/cyrille-aimee.jpg · 800×900px</span>
+        </div>
+      </div>
+      <div class="featured__content from-right">
+        <span class="featured__label" data-es="Directora Artística" data-en="Artistic Director">Directora Artística</span>
+        <h3 class="featured__name">Cyrille Aimée</h3>
+        <p class="featured__role" data-es="Directora Artística · Voz" data-en="Artistic Director · Vocals">Directora Artística · Voz</p>
+        <div class="divider"></div>
+        <p class="featured__bio" data-es="Internacionalmente aclamada, Cyrille Aimée es una de las voces de jazz más reconocidas de su generación. Su enfoque único de la improvisación y la performance ha cautivado al mundo." data-en="Internationally acclaimed, Cyrille Aimée is one of the most recognized jazz voices of her generation. Her unique approach to improvisation and performance has captivated the world.">Internacionalmente aclamada, Cyrille Aimée es una de las voces de jazz más reconocidas de su generación.</p>
+        <a href="https://cyrillemusic.com" target="_blank" rel="noopener noreferrer" class="featured__link">cyrillemusic.com →</a>
+      </div>
+    </div>
+
+    <h3 class="faculty-title" data-es="Faculty Internacional" data-en="International Faculty">Faculty Internacional</h3>
+    <div class="faculty-grid">
+      <div class="faculty-card fade-in delay-1">
+        <!-- IMAGE: assets/images/artists/artist-2.jpg · 400×400px -->
+        <div class="img-placeholder" style="aspect-ratio:1/1;border-radius:0;border:none;border-bottom:1px dashed rgba(255,255,255,.2);background:rgba(125,184,122,.15)">
+          <span style="color:rgba(255,255,255,.5)">assets/images/artists/artist-2.jpg · 400×400px</span>
+        </div>
+        <div class="faculty-info">
+          <h4 data-es="Artista Invitado" data-en="Guest Artist">Artista Invitado</h4>
+          <span class="role" data-es="Por confirmar" data-en="To be confirmed">Por confirmar</span>
+          <p data-es="Información próximamente." data-en="Information coming soon.">Información próximamente.</p>
+        </div>
+      </div>
+      <div class="faculty-card fade-in delay-2">
+        <!-- IMAGE: assets/images/artists/artist-3.jpg · 400×400px -->
+        <div class="img-placeholder" style="aspect-ratio:1/1;border-radius:0;border:none;border-bottom:1px dashed rgba(255,255,255,.2);background:rgba(125,184,122,.15)">
+          <span style="color:rgba(255,255,255,.5)">assets/images/artists/artist-3.jpg · 400×400px</span>
+        </div>
+        <div class="faculty-info">
+          <h4 data-es="Artista Invitado" data-en="Guest Artist">Artista Invitado</h4>
+          <span class="role" data-es="Por confirmar" data-en="To be confirmed">Por confirmar</span>
+          <p data-es="Información próximamente." data-en="Information coming soon.">Información próximamente.</p>
+        </div>
+      </div>
+      <div class="faculty-card fade-in delay-3" style="opacity:.5">
+        <div style="aspect-ratio:1/1;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;font-size:3rem">🎵</div>
+        <div class="faculty-info">
+          <h4>···</h4>
+          <span class="role" data-es="Más artistas por anunciar" data-en="More artists to be announced">Más artistas por anunciar</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     LOCATION — UBICACIÓN
+     ============================================================ -->
+<section id="location" class="section section--cream">
+  <div class="container">
+    <div class="sec-header fade-in">
+      <span class="section-label" data-es="Ubicación" data-en="Location">Ubicación</span>
+      <h2 data-es="La Huerta Farm School" data-en="La Huerta Farm School">La Huerta Farm School</h2>
+      <p class="text-accent" data-es="Sarapiquí, Costa Rica" data-en="Sarapiquí, Costa Rica">Sarapiquí, Costa Rica</p>
+      <div class="divider divider--center"></div>
+    </div>
+
+    <div class="location-grid">
+      <div class="location-text from-left">
+        <p class="location-body" data-es="Ubicada en la región de Sarapiquí, en el Caribe costarricense, La Huerta Farm School es una escuela de permacultura rodeada de selva virgen, ríos cristalinos y biodiversidad exuberante." data-en="Located in the Sarapiquí region of Caribbean Costa Rica, La Huerta Farm School is a permaculture school surrounded by virgin jungle, crystal-clear rivers and exuberant biodiversity.">Ubicada en la región de Sarapiquí, en el Caribe costarricense, La Huerta Farm School es una escuela de permacultura rodeada de selva virgen, ríos cristalinos y biodiversidad exuberante.</p>
+        <p class="location-body" data-es="A pocas horas de San José, accesible pero alejada del mundo urbano. Un lugar donde el tiempo se mueve diferente." data-en="A few hours from San José, accessible yet removed from the urban world. A place where time moves differently.">A pocas horas de San José, accesible pero alejada del mundo urbano. Un lugar donde el tiempo se mueve diferente.</p>
+        <blockquote class="location-quote">
+          <span data-es='"Aquí la naturaleza es el maestro principal."' data-en='"Here, nature is the principal teacher."'>"Aquí la naturaleza es el maestro principal."</span>
+        </blockquote>
+      </div>
+      <div class="location-images from-right">
+        <!-- IMAGE: assets/images/location/la-huerta-farm.jpg · 700×500px -->
+        <div class="img-placeholder" style="aspect-ratio:16/10;border-radius:var(--radius-xl)">
+          <span>assets/images/location/la-huerta-farm.jpg · 700×500px</span>
+        </div>
+        <!-- IMAGE: assets/images/location/surroundings.jpg · 700×400px -->
+        <div class="img-placeholder" style="aspect-ratio:16/10;border-radius:var(--radius-xl)">
+          <span>assets/images/location/surroundings.jpg · 700×400px</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-placeholder fade-in">
+      <div class="map-placeholder__inner">
+        <span class="icon">📍</span>
+        <h4>La Huerta Farm School</h4>
+        <p data-es="Sarapiquí, Costa Rica" data-en="Sarapiquí, Costa Rica">Sarapiquí, Costa Rica</p>
+        <!--
+          MAPA PLACEHOLDER — Sustituir por iframe de Google Maps:
+          <iframe src="https://maps.google.com/maps?q=10.4800,-84.0300&z=13&output=embed"
+                  width="100%" height="380" style="border:0" allowfullscreen loading="lazy"></iframe>
+        -->
+        <div class="note">
+          <strong>MAPA PLACEHOLDER</strong><br>
+          Integrar iframe de Google Maps aquí.<br>
+          <span style="font-size:.7rem">Coordenadas aprox: 10.4800° N, 84.0300° W</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     BOOKING
+     ============================================================ -->
+<section id="booking" class="section section--warm">
+  <div class="container">
+    <div class="booking-header fade-in">
+      <span class="section-label" data-es="Booking" data-en="Booking">Booking</span>
+      <h2 data-es="Reserva tu Lugar" data-en="Reserve Your Spot">Reserva tu Lugar</h2>
+      <div class="divider divider--center"></div>
+      <p class="booking-subtitle" data-es="Solo 30 participantes por edición. Plazas limitadas." data-en="Only 30 participants per edition. Limited spots.">Solo 30 participantes por edición. Plazas limitadas.</p>
+    </div>
+
+    <div class="edition-tabs fade-in">
+      <button class="edition-tab active" id="tab-1" onclick="selectEdition(1)">
+        <span class="edition-tab__label" data-es="Edición 1" data-en="Edition 1">Edición 1</span>
+        <span class="edition-tab__dates" data-es="15 – 20 de febrero, 2027" data-en="February 15 – 20, 2027">15 – 20 de febrero, 2027</span>
+      </button>
+      <button class="edition-tab" id="tab-2" onclick="selectEdition(2)">
+        <span class="edition-tab__label" data-es="Edición 2" data-en="Edition 2">Edición 2</span>
+        <span class="edition-tab__dates" data-es="22 – 27 de febrero, 2027" data-en="February 22 – 27, 2027">22 – 27 de febrero, 2027</span>
+      </button>
+    </div>
+
+    <div class="booking-grid">
+      <aside class="booking-details fade-in">
+        <div class="detail-price">
+          <span class="detail-price__label" data-es="Precio por persona" data-en="Price per person">Precio por persona</span>
+          <strong class="detail-price__val">~$2,000 USD</strong>
+          <p class="detail-price__note" data-es="Todo incluido: alojamiento, comidas, clases, materiales y actividades." data-en="All inclusive: accommodation, meals, classes, materials and activities.">Todo incluido: alojamiento, comidas, clases, materiales y actividades.</p>
+        </div>
+        <div class="detail-capacity">
+          <span>👥</span>
+          <span data-es="30 participantes por edición" data-en="30 participants per edition">30 participantes por edición</span>
+        </div>
+        <div class="detail-includes">
+          <h4 data-es="¿Qué incluye?" data-en="What's included?">¿Qué incluye?</h4>
+          <ul>
+            <li><span class="check">✓</span><span data-es="Masterclases con Cyrille Aimée y faculty internacional" data-en="Masterclasses with Cyrille Aimée and international faculty">Masterclases con Cyrille Aimée y faculty internacional</span></li>
+            <li><span class="check">✓</span><span data-es="6 días / 5 noches en glamping en la selva" data-en="6 days / 5 nights jungle glamping">6 días / 5 noches en glamping en la selva</span></li>
+            <li><span class="check">✓</span><span data-es="Todas las comidas (desayuno, almuerzo, cena)" data-en="All meals (breakfast, lunch, dinner)">Todas las comidas (desayuno, almuerzo, cena)</span></li>
+            <li><span class="check">✓</span><span data-es="Jam sessions y conciertos íntimos" data-en="Jam sessions and intimate concerts">Jam sessions y conciertos íntimos</span></li>
+            <li><span class="check">✓</span><span data-es="Acceso privado al río y actividades de naturaleza" data-en="Private river access and nature activities">Acceso privado al río y actividades de naturaleza</span></li>
+            <li><span class="check">✓</span><span data-es="Starter pack: cuaderno, bolígrafo y camiseta" data-en="Starter pack: notebook, pen and t-shirt">Starter pack: cuaderno, bolígrafo y camiseta</span></li>
+            <li><span class="check">✓</span><span data-es="Comunidad internacional de músicos" data-en="International community of musicians">Comunidad internacional de músicos</span></li>
+          </ul>
+        </div>
+      </aside>
+
+      <div class="booking-form-card fade-in">
+        <h3 data-es="Solicitud de Reserva" data-en="Booking Request">Solicitud de Reserva</h3>
+
+        <div class="form-success" id="form-success" hidden>
+          <span class="icon">🌿</span>
+          <h4 data-es="¡Gracias por tu interés!" data-en="Thank you for your interest!">¡Gracias por tu interés!</h4>
+          <p data-es="Hemos recibido tu solicitud. Nos pondremos en contacto contigo pronto en el correo proporcionado." data-en="We have received your request. We will contact you shortly at the email provided.">Hemos recibido tu solicitud. Nos pondremos en contacto contigo pronto en el correo proporcionado.</p>
+        </div>
+
+        <form class="form-body" id="booking-form" onsubmit="submitForm(event)" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="f-name"><span data-es="Nombre completo" data-en="Full name">Nombre completo</span> <span class="req">*</span></label>
+            <input id="f-name" name="name" type="text" required class="form-input" placeholder="Tu nombre completo" autocomplete="name" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-email"><span data-es="Correo electrónico" data-en="Email address">Correo electrónico</span> <span class="req">*</span></label>
+            <input id="f-email" name="email" type="email" required class="form-input" placeholder="tu@email.com" autocomplete="email" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-country"><span data-es="País" data-en="Country">País</span> <span class="req">*</span></label>
+              <select id="f-country" name="country" required class="form-select" autocomplete="country">
+                <option value="">Selecciona...</option>
+                <option value="ES">España</option>
+                <option value="MX">México</option>
+                <option value="CO">Colombia</option>
+                <option value="AR">Argentina</option>
+                <option value="CR">Costa Rica</option>
+                <option value="US">Estados Unidos</option>
+                <option value="FR">Francia</option>
+                <option value="OTHER">Otro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-phone"><span data-es="Teléfono" data-en="Phone">Teléfono</span></label>
+              <input id="f-phone" name="phone" type="tel" class="form-input" placeholder="+34 600 000 000" autocomplete="tel" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><span data-es="Edición de interés" data-en="Edition of interest">Edición de interés</span></label>
+            <div class="form-radios">
+              <label class="form-radio-label"><input type="radio" name="edition" value="1" checked class="form-radio" /> <span data-es="Edición 1 — Feb 15-20" data-en="Edition 1 — Feb 15-20">Edición 1 — Feb 15-20</span></label>
+              <label class="form-radio-label"><input type="radio" name="edition" value="2" class="form-radio" /> <span data-es="Edición 2 — Feb 22-27" data-en="Edition 2 — Feb 22-27">Edición 2 — Feb 22-27</span></label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-bg"><span data-es="Cuéntanos sobre tu experiencia musical" data-en="Tell us about your musical background">Cuéntanos sobre tu experiencia musical</span></label>
+            <textarea id="f-bg" name="background" rows="4" class="form-textarea" placeholder="¿Qué instrumento tocas? ¿Cuántos años llevas tocando?..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-heard"><span data-es="¿Cómo nos encontraste?" data-en="How did you find us?">¿Cómo nos encontraste?</span></label>
+            <select id="f-heard" name="howHeard" class="form-select">
+              <option value="">Selecciona una opción</option>
+              <option value="instagram">Instagram</option>
+              <option value="referral" data-es="Recomendación" data-en="Recommendation">Recomendación</option>
+              <option value="cyrille" data-es="Seguidores de Cyrille Aimée" data-en="Cyrille Aimée followers">Seguidores de Cyrille Aimée</option>
+              <option value="google">Google</option>
+              <option value="other" data-es="Otro" data-en="Other">Otro</option>
+            </select>
+          </div>
+          <div class="form-check-group">
+            <input id="f-agree" name="agree" type="checkbox" required />
+            <label for="f-agree"><span data-es="Acepto recibir información sobre Jazz en la Jungla y el proceso de reserva." data-en="I agree to receive information about Jazz en la Jungla and the booking process.">Acepto recibir información sobre Jazz en la Jungla y el proceso de reserva.</span> <span class="req">*</span></label>
+          </div>
+          <p class="form-error" id="form-error" hidden data-es="Por favor completa todos los campos obligatorios." data-en="Please fill in all required fields.">Por favor completa todos los campos obligatorios.</p>
+          <button type="submit" class="btn btn--green btn--md" style="width:100%;border-radius:var(--radius-full);margin-top:8px">
+            <span data-es="Enviar solicitud" data-en="Send request">Enviar solicitud</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="tilopay-wrap fade-in">
+      <h3 data-es="Pasarela de Pago" data-en="Payment Gateway">Pasarela de Pago</h3>
+      <div class="tilopay-block">
+        <p class="tilopay-note" data-es="Una vez confirmada tu plaza, podrás completar el pago de forma segura a través de Tilopay." data-en="Once your spot is confirmed, you will be able to complete the payment securely through Tilopay.">Una vez confirmada tu plaza, podrás completar el pago de forma segura a través de Tilopay.</p>
+        <!--
+          TILOPAY PLACEHOLDER — integración pendiente
+          Cuando esté listo: reemplazar este button por el widget de Tilopay
+        -->
+        <button class="tilopay-btn" disabled aria-label="Pago via Tilopay - Próximamente">
+          💳 <span data-es="Pagar con Tilopay" data-en="Pay with Tilopay">Pagar con Tilopay</span>
+          <span class="tilopay-badge" data-es="Próximamente" data-en="Coming soon">Próximamente</span>
+        </button>
+        <span class="tilopay-security">🔒 <span data-es="Pago seguro · SSL encriptado" data-en="Secure payment · SSL encrypted">Pago seguro · SSL encriptado</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER / CONTACTO
+     ============================================================ -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-body">
+      <div class="footer-col">
+        <a href="#hero" style="text-decoration:none">
+          <span class="footer-logo__text">Jazz <span class="footer-logo__accent">en la Jungla</span></span>
+        </a>
+        <p class="footer-tagline">Jazz en la Jungla · Costa Rica · 2027</p>
+        <p class="footer-tagline-accent" data-es="Música · Naturaleza · Transformación" data-en="Music · Nature · Transformation">Música · Naturaleza · Transformación</p>
+        <div class="footer-social">
+          <a href="https://instagram.com/Latucanera27" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+            @Latucanera27
+          </a>
+          <a href="mailto:info@jazzenlaJungla.com">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+            info@jazzenlaJungla.com
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title" data-es="Navegación" data-en="Navigation">Navegación</h4>
+        <ul class="footer-nav">
+          <li><a href="#hero" data-es="Inicio" data-en="Home">Inicio</a></li>
+          <li><a href="#about" data-es="Sobre el Proyecto" data-en="About">Sobre el Proyecto</a></li>
+          <li><a href="#experience" data-es="La Experiencia" data-en="The Experience">La Experiencia</a></li>
+          <li><a href="#artists" data-es="Artistas" data-en="Artists">Artistas</a></li>
+          <li><a href="#location" data-es="Ubicación" data-en="Location">Ubicación</a></li>
+          <li><a href="#booking" data-es="Booking" data-en="Booking">Booking</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-col-title" data-es="Patrocinios" data-en="Sponsorships">Patrocinios</h4>
+        <p class="footer-sponsor-text" data-es="¿Tu marca quiere ser parte de esta experiencia única? Buscamos partners en audio, instrumentos, gastronomía y lifestyle." data-en="Does your brand want to be part of this unique experience? We are looking for partners in audio, instruments, gastronomy and lifestyle.">¿Tu marca quiere ser parte de esta experiencia única? Buscamos partners en audio, instrumentos, gastronomía y lifestyle.</p>
+        <a href="mailto:patrocinios@jazzenlaJungla.com" class="footer-sponsor-cta">
+          <span data-es="Escríbenos →" data-en="Write to us →">Escríbenos →</span>
+        </a>
+        <p class="footer-contact">
+          <span data-es="Contacto:" data-en="Contact:">Contacto:</span> <strong>Javier Morales</strong>
+        </p>
+        <a href="mailto:javier@jazzenlaJungla.com" class="footer-email">javier@jazzenlaJungla.com</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner container">
+      <p class="footer-copy" data-es="© 2027 Jazz en la Jungla. Todos los derechos reservados." data-en="© 2027 Jazz en la Jungla. All rights reserved.">© 2027 Jazz en la Jungla. Todos los derechos reservados.</p>
+      <button class="lang-btn" id="lang-toggle-footer" aria-label="Cambiar idioma">🇪🇸 ES | EN</button>
+    </div>
+  </div>
+</footer>
+
+<!-- JavaScript -->
+<script src="app.js"></script>
+
+</body>
+</html>
