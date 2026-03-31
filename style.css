@@ -414,9 +414,7 @@ p { color: var(--text-mid); line-height: 1.85; }
 .location-images { display: flex; flex-direction: column; gap: 20px; }
 .location-images .img-placeholder { aspect-ratio: 16/10; border-radius: var(--radius-xl); }
 .map-placeholder {
-  width: 100%; height: 380px; background: var(--jungle-mist);
-  border: 2px dashed var(--jungle-bright); border-radius: var(--radius-lg);
-  display: flex; align-items: center; justify-content: center;
+  width: 100%; border-radius: var(--radius-lg); overflow: hidden;
 }
 .map-placeholder__inner { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 32px; }
 .map-placeholder__inner .icon { font-size: 3rem; }
