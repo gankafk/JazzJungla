@@ -475,6 +475,58 @@ p { color: var(--text-mid); line-height: 1.85; }
   outline: none; border-color: var(--jungle-bright); box-shadow: 0 0 0 3px rgba(74,124,63,.15);
 }
 .form-textarea { resize: vertical; min-height: 100px; }
+
+/* ── intl-tel-input: integración visual ─────────────────────── */
+.iti { width: 100%; }
+.iti__tel-input {
+  /* el botón de bandera+prefijo ocupa ~90px; intl-tel-input lo gestiona con padding-left inline,
+     solo aseguramos que el input herede el estilo del formulario */
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-dark);
+  background: var(--cream);
+  border: 1.5px solid var(--earth-light);
+  border-radius: var(--radius-md);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.iti__tel-input:focus {
+  outline: none;
+  border-color: var(--jungle-bright);
+  box-shadow: 0 0 0 3px rgba(74,124,63,.15);
+}
+/* botón de bandera + código */
+.iti__selected-country-primary {
+  background: var(--cream);
+  border-right: 1.5px solid var(--earth-light);
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+  padding: 0 8px 0 10px;
+  height: 100%;
+}
+.iti__selected-country-primary:hover,
+.iti__selected-country-primary:focus {
+  background: #f0ede6;
+}
+/* desplegable de países del widget de teléfono */
+.iti__dropdown-content {
+  border: 1.5px solid var(--earth-light);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  font-family: var(--font-body);
+  font-size: .9rem;
+}
+.iti__search-input {
+  font-family: var(--font-body);
+  font-size: .9rem;
+  border-bottom: 1.5px solid var(--earth-light);
+  padding: 8px 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.iti__country.iti__highlight,
+.iti__country:hover {
+  background: rgba(74,124,63,.08);
+}
 .form-radios { display: flex; flex-direction: column; gap: 10px; }
 @media (min-width: 500px) { .form-radios { flex-direction: row; flex-wrap: wrap; } }
 .form-radio-label { display: flex; align-items: center; gap: 8px; font-size: .9rem; color: var(--text-mid); cursor: pointer; }

@@ -91,6 +91,11 @@ function selectEdition(n) {
   if (radio) radio.checked = true
 }
 
+// Sincronizar en sentido contrario: radio → tabs
+document.querySelectorAll('input[name="edition"]').forEach(radio => {
+  radio.addEventListener('change', () => selectEdition(Number(radio.value)))
+})
+
 // ============================================================
 // BOOKING — formulario
 // ============================================================
@@ -110,7 +115,10 @@ async function submitForm(e) {
   }
   errEl.hidden = true
 
-  const payload = { name, email, country }
+  // Número completo con prefijo (ej. +34612345678); window.itiPhone viene del script inline
+  const phone = window.itiPhone ? window.itiPhone.getNumber() : form.phone.value.trim()
+
+  const payload = { name, email, country, phone }
 
   if (CONFIG.API_URL) {
     // ── CON BACKEND ──────────────────────────────────────────

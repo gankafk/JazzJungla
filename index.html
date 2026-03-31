@@ -12,6 +12,8 @@
 
   <!-- Estilos -->
   <link rel="stylesheet" href="style.css" />
+  <!-- intl-tel-input: selector de país + prefijo telefónico -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23/build/css/intlTelInput.min.css" />
 </head>
 <body>
 
@@ -36,14 +38,7 @@
         <a href="#about" class="navbar__link" data-es="Sobre el Proyecto" data-en="About">Sobre el Proyecto</a>
       </li>
       <li class="navbar__item">
-        <a href="#experience" class="navbar__link" data-es="La Experiencia" data-en="The Experience">La Experiencia <span class="nav-arrow">▾</span></a>
-        <ul class="dropdown">
-          <li><a href="#experience" data-es="Masterclases" data-en="Masterclasses">Masterclases</a></li>
-          <li><a href="#experience" data-es="Glamping" data-en="Glamping">Glamping</a></li>
-          <li><a href="#experience" data-es="Gastronomía" data-en="Cuisine">Gastronomía</a></li>
-          <li><a href="#experience" data-es="Jam Sessions" data-en="Jam Sessions">Jam Sessions</a></li>
-          <li><a href="#experience" data-es="Río y Naturaleza" data-en="River & Nature">Río y Naturaleza</a></li>
-        </ul>
+        <a href="#experience" class="navbar__link" data-es="La Experiencia" data-en="The Experience">La Experiencia</a>
       </li>
       <li class="navbar__item">
         <a href="#artists" class="navbar__link" data-es="Artistas" data-en="Artists">Artistas</a>
@@ -52,11 +47,7 @@
         <a href="#location" class="navbar__link" data-es="Ubicación" data-en="Location">Ubicación</a>
       </li>
       <li class="navbar__item">
-        <a href="#booking" class="navbar__link" data-es="Booking" data-en="Booking">Booking <span class="nav-arrow">▾</span></a>
-        <ul class="dropdown">
-          <li><a href="#booking" data-es="Edición 1 – Feb 15-20" data-en="Edition 1 – Feb 15-20">Edición 1 – Feb 15-20</a></li>
-          <li><a href="#booking" data-es="Edición 2 – Feb 22-27" data-en="Edition 2 – Feb 22-27">Edición 2 – Feb 22-27</a></li>
-        </ul>
+        <a href="#booking" class="navbar__link" data-es="Booking" data-en="Booking">Booking</a>
       </li>
       <li class="navbar__item">
         <a href="#footer" class="navbar__link" data-es="Contacto" data-en="Contact">Contacto</a>
@@ -80,29 +71,10 @@
   <ul>
     <li><a href="#hero" onclick="closeMobile()" data-es="Inicio" data-en="Home">Inicio</a></li>
     <li><a href="#about" onclick="closeMobile()" data-es="Sobre el Proyecto" data-en="About">Sobre el Proyecto</a></li>
-    <li>
-      <button onclick="toggleMobileSub(this)" aria-expanded="false">
-        <span data-es="La Experiencia" data-en="The Experience">La Experiencia</span> <span>▾</span>
-      </button>
-      <ul class="mobile-submenu" hidden>
-        <li><a href="#experience" onclick="closeMobile()" data-es="Masterclases" data-en="Masterclasses">Masterclases</a></li>
-        <li><a href="#experience" onclick="closeMobile()" data-es="Glamping" data-en="Glamping">Glamping</a></li>
-        <li><a href="#experience" onclick="closeMobile()" data-es="Gastronomía" data-en="Cuisine">Gastronomía</a></li>
-        <li><a href="#experience" onclick="closeMobile()" data-es="Jam Sessions" data-en="Jam Sessions">Jam Sessions</a></li>
-        <li><a href="#experience" onclick="closeMobile()" data-es="Río y Naturaleza" data-en="River & Nature">Río y Naturaleza</a></li>
-      </ul>
-    </li>
+    <li><a href="#experience" onclick="closeMobile()" data-es="La Experiencia" data-en="The Experience">La Experiencia</a></li>
     <li><a href="#artists" onclick="closeMobile()" data-es="Artistas" data-en="Artists">Artistas</a></li>
     <li><a href="#location" onclick="closeMobile()" data-es="Ubicación" data-en="Location">Ubicación</a></li>
-    <li>
-      <button onclick="toggleMobileSub(this)" aria-expanded="false">
-        <span data-es="Booking" data-en="Booking">Booking</span> <span>▾</span>
-      </button>
-      <ul class="mobile-submenu" hidden>
-        <li><a href="#booking" onclick="closeMobile()" data-es="Edición 1 – Feb 15-20" data-en="Edition 1 – Feb 15-20">Edición 1 – Feb 15-20</a></li>
-        <li><a href="#booking" onclick="closeMobile()" data-es="Edición 2 – Feb 22-27" data-en="Edition 2 – Feb 22-27">Edición 2 – Feb 22-27</a></li>
-      </ul>
-    </li>
+    <li><a href="#booking" onclick="closeMobile()" data-es="Booking" data-en="Booking">Booking</a></li>
     <li><a href="#footer" onclick="closeMobile()" data-es="Contacto" data-en="Contact">Contacto</a></li>
     <li>
       <div class="mobile-lang">
@@ -409,20 +381,13 @@
             <div class="form-group">
               <label class="form-label" for="f-country"><span data-es="País" data-en="Country">País</span> <span class="req">*</span></label>
               <select id="f-country" name="country" required class="form-select" autocomplete="country">
-                <option value="">Selecciona...</option>
-                <option value="ES">España</option>
-                <option value="MX">México</option>
-                <option value="CO">Colombia</option>
-                <option value="AR">Argentina</option>
-                <option value="CR">Costa Rica</option>
-                <option value="US">Estados Unidos</option>
-                <option value="FR">Francia</option>
-                <option value="OTHER">Otro</option>
+                <option value="" data-es="Selecciona..." data-en="Select...">Selecciona...</option>
+                <!-- Opciones pobladas por JS vía intl-tel-input -->
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="f-phone"><span data-es="Teléfono" data-en="Phone">Teléfono</span></label>
-              <input id="f-phone" name="phone" type="tel" class="form-input" placeholder="+34 600 000 000" autocomplete="tel" />
+              <input id="f-phone" name="phone" type="tel" class="form-input" autocomplete="tel" />
             </div>
           </div>
           <div class="form-group">
@@ -534,6 +499,132 @@
     </div>
   </div>
 </footer>
+
+<!-- intl-tel-input -->
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23/build/js/intlTelInput.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ── Lista completa de países [iso2, nombre_es, nombre_en] ────
+  // Fuente: ISO 3166-1 alpha-2. intl-tel-input usará estos iso2
+  // para mapear el prefijo telefónico automáticamente.
+  const COUNTRIES = [
+    ['af','Afganistán','Afghanistan'],['al','Albania','Albania'],['dz','Argelia','Algeria'],
+    ['ad','Andorra','Andorra'],['ao','Angola','Angola'],['ag','Antigua y Barbuda','Antigua and Barbuda'],
+    ['ar','Argentina','Argentina'],['am','Armenia','Armenia'],['au','Australia','Australia'],
+    ['at','Austria','Austria'],['az','Azerbaiyán','Azerbaijan'],['bs','Bahamas','Bahamas'],
+    ['bh','Baréin','Bahrain'],['bd','Bangladés','Bangladesh'],['bb','Barbados','Barbados'],
+    ['by','Bielorrusia','Belarus'],['be','Bélgica','Belgium'],['bz','Belice','Belize'],
+    ['bj','Benín','Benin'],['bt','Bután','Bhutan'],['bo','Bolivia','Bolivia'],
+    ['ba','Bosnia y Herzegovina','Bosnia and Herzegovina'],['bw','Botsuana','Botswana'],
+    ['br','Brasil','Brazil'],['bn','Brunéi','Brunei'],['bg','Bulgaria','Bulgaria'],
+    ['bf','Burkina Faso','Burkina Faso'],['bi','Burundi','Burundi'],['cv','Cabo Verde','Cape Verde'],
+    ['kh','Camboya','Cambodia'],['cm','Camerún','Cameroon'],['ca','Canadá','Canada'],
+    ['cf','Rep. Centroafricana','Central African Republic'],['td','Chad','Chad'],
+    ['cl','Chile','Chile'],['cn','China','China'],['co','Colombia','Colombia'],
+    ['km','Comoras','Comoros'],['cd','Congo (Rep. Dem.)','Congo (DRC)'],['cg','Congo (Rep.)','Congo (Republic)'],
+    ['cr','Costa Rica','Costa Rica'],['hr','Croacia','Croatia'],['cu','Cuba','Cuba'],
+    ['cy','Chipre','Cyprus'],['cz','Chequia','Czech Republic'],['dk','Dinamarca','Denmark'],
+    ['dj','Yibuti','Djibouti'],['dm','Dominica','Dominica'],['do','Rep. Dominicana','Dominican Republic'],
+    ['ec','Ecuador','Ecuador'],['eg','Egipto','Egypt'],['sv','El Salvador','El Salvador'],
+    ['gq','Guinea Ecuatorial','Equatorial Guinea'],['er','Eritrea','Eritrea'],['ee','Estonia','Estonia'],
+    ['sz','Esuatini','Eswatini'],['et','Etiopía','Ethiopia'],['fj','Fiyi','Fiji'],
+    ['fi','Finlandia','Finland'],['fr','Francia','France'],['ga','Gabón','Gabon'],
+    ['gm','Gambia','Gambia'],['ge','Georgia','Georgia'],['de','Alemania','Germany'],
+    ['gh','Ghana','Ghana'],['gr','Grecia','Greece'],['gd','Granada','Grenada'],
+    ['gt','Guatemala','Guatemala'],['gn','Guinea','Guinea'],['gw','Guinea-Bisáu','Guinea-Bissau'],
+    ['gy','Guyana','Guyana'],['ht','Haití','Haiti'],['hn','Honduras','Honduras'],
+    ['hu','Hungría','Hungary'],['is','Islandia','Iceland'],['in','India','India'],
+    ['id','Indonesia','Indonesia'],['ir','Irán','Iran'],['iq','Irak','Iraq'],
+    ['ie','Irlanda','Ireland'],['il','Israel','Israel'],['it','Italia','Italy'],
+    ['jm','Jamaica','Jamaica'],['jp','Japón','Japan'],['jo','Jordania','Jordan'],
+    ['kz','Kazajistán','Kazakhstan'],['ke','Kenia','Kenya'],['ki','Kiribati','Kiribati'],
+    ['kp','Corea del Norte','North Korea'],['kr','Corea del Sur','South Korea'],
+    ['kw','Kuwait','Kuwait'],['kg','Kirguistán','Kyrgyzstan'],['la','Laos','Laos'],
+    ['lv','Letonia','Latvia'],['lb','Líbano','Lebanon'],['ls','Lesoto','Lesotho'],
+    ['lr','Liberia','Liberia'],['ly','Libia','Libya'],['li','Liechtenstein','Liechtenstein'],
+    ['lt','Lituania','Lithuania'],['lu','Luxemburgo','Luxembourg'],['mg','Madagascar','Madagascar'],
+    ['mw','Malaui','Malawi'],['my','Malasia','Malaysia'],['mv','Maldivas','Maldives'],
+    ['ml','Malí','Mali'],['mt','Malta','Malta'],['mh','Islas Marshall','Marshall Islands'],
+    ['mr','Mauritania','Mauritania'],['mu','Mauricio','Mauritius'],['mx','México','Mexico'],
+    ['fm','Micronesia','Micronesia'],['md','Moldavia','Moldova'],['mc','Mónaco','Monaco'],
+    ['mn','Mongolia','Mongolia'],['me','Montenegro','Montenegro'],['ma','Marruecos','Morocco'],
+    ['mz','Mozambique','Mozambique'],['mm','Myanmar','Myanmar'],['na','Namibia','Namibia'],
+    ['nr','Nauru','Nauru'],['np','Nepal','Nepal'],['nl','Países Bajos','Netherlands'],
+    ['nz','Nueva Zelanda','New Zealand'],['ni','Nicaragua','Nicaragua'],['ne','Níger','Niger'],
+    ['ng','Nigeria','Nigeria'],['mk','Macedonia del Norte','North Macedonia'],['no','Noruega','Norway'],
+    ['om','Omán','Oman'],['pk','Pakistán','Pakistan'],['pw','Palaos','Palau'],
+    ['pa','Panamá','Panama'],['pg','Papúa Nueva Guinea','Papua New Guinea'],['py','Paraguay','Paraguay'],
+    ['pe','Perú','Peru'],['ph','Filipinas','Philippines'],['pl','Polonia','Poland'],
+    ['pt','Portugal','Portugal'],['qa','Catar','Qatar'],['ro','Rumanía','Romania'],
+    ['ru','Rusia','Russia'],['rw','Ruanda','Rwanda'],['kn','San Cristóbal y Nieves','Saint Kitts and Nevis'],
+    ['lc','Santa Lucía','Saint Lucia'],['vc','San Vicente y las Granadinas','Saint Vincent and the Grenadines'],
+    ['ws','Samoa','Samoa'],['sm','San Marino','San Marino'],['st','Santo Tomé y Príncipe','Sao Tome and Principe'],
+    ['sa','Arabia Saudita','Saudi Arabia'],['sn','Senegal','Senegal'],['rs','Serbia','Serbia'],
+    ['sc','Seychelles','Seychelles'],['sl','Sierra Leona','Sierra Leone'],['sg','Singapur','Singapore'],
+    ['sk','Eslovaquia','Slovakia'],['si','Eslovenia','Slovenia'],['sb','Islas Salomón','Solomon Islands'],
+    ['so','Somalia','Somalia'],['za','Sudáfrica','South Africa'],['ss','Sudán del Sur','South Sudan'],
+    ['es','España','Spain'],['lk','Sri Lanka','Sri Lanka'],['sd','Sudán','Sudan'],
+    ['sr','Surinam','Suriname'],['se','Suecia','Sweden'],['ch','Suiza','Switzerland'],
+    ['sy','Siria','Syria'],['tw','Taiwán','Taiwan'],['tj','Tayikistán','Tajikistan'],
+    ['tz','Tanzania','Tanzania'],['th','Tailandia','Thailand'],['tl','Timor Oriental','Timor-Leste'],
+    ['tg','Togo','Togo'],['to','Tonga','Tonga'],['tt','Trinidad y Tobago','Trinidad and Tobago'],
+    ['tn','Túnez','Tunisia'],['tr','Türkiye','Turkey'],['tm','Turkmenistán','Turkmenistan'],
+    ['tv','Tuvalu','Tuvalu'],['ug','Uganda','Uganda'],['ua','Ucrania','Ukraine'],
+    ['ae','Emiratos Árabes Unidos','United Arab Emirates'],['gb','Reino Unido','United Kingdom'],
+    ['us','Estados Unidos','United States'],['uy','Uruguay','Uruguay'],['uz','Uzbekistán','Uzbekistan'],
+    ['vu','Vanuatu','Vanuatu'],['ve','Venezuela','Venezuela'],['vn','Vietnam','Vietnam'],
+    ['ye','Yemen','Yemen'],['zm','Zambia','Zambia'],['zw','Zimbabue','Zimbabwe']
+  ];
+
+  // ── Inicializar intl-tel-input en el campo de teléfono ───────
+  const phoneInput = document.getElementById('f-phone');
+  const iti = window.intlTelInput(phoneInput, {
+    separateDialCode: true,
+    initialCountry: 'es',
+    loadUtilsOnInit: 'https://cdn.jsdelivr.net/npm/intl-tel-input@23/build/js/utils.js'
+  });
+
+  // ── Poblar el <select> de país ───────────────────────────────
+  const countrySelect = document.getElementById('f-country');
+
+  function buildOptions(lang) {
+    while (countrySelect.options.length > 1) countrySelect.remove(1);
+
+    const nameIdx = lang === 'es' ? 1 : 2;
+    const sorted  = [...COUNTRIES].sort((a, b) =>
+      a[nameIdx].localeCompare(b[nameIdx], lang)
+    );
+
+    sorted.forEach(([iso2, nameEs, nameEn]) => {
+      const opt         = document.createElement('option');
+      opt.value         = iso2.toUpperCase();
+      opt.dataset.iso2  = iso2;
+      opt.textContent   = lang === 'es' ? nameEs : nameEn;
+      countrySelect.appendChild(opt);
+    });
+  }
+
+  buildOptions(document.documentElement.lang || 'es');
+
+  // ── Sincronizar: cambio de país → prefijo telefónico ─────────
+  countrySelect.addEventListener('change', function () {
+    if (this.value) iti.setCountry(this.value.toLowerCase());
+  });
+
+  // ── Reordenar al cambiar idioma (MutationObserver sobre <html lang>) ──
+  new MutationObserver(() => {
+    const lang    = document.documentElement.lang || 'es';
+    const current = countrySelect.value;
+    buildOptions(lang);
+    if (current) countrySelect.value = current;
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
+  // ── Exponer iti para que submitForm() recoja el número completo ──
+  window.itiPhone = iti;
+})();
+</script>
 
 <!-- JavaScript -->
 <script src="app.js"></script>
