@@ -122,6 +122,7 @@ async function submitForm(e) {
     errEl.hidden = false
     errEmailEl.hidden = true
     errAgeEl.hidden = true
+    errEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     return
   }
   errEl.hidden = true
@@ -129,6 +130,7 @@ async function submitForm(e) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email)) {
     errEmailEl.hidden = false
+    errEmailEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     return
   }
   errEmailEl.hidden = true
@@ -138,6 +140,7 @@ async function submitForm(e) {
   const age18     = new Date(birthDate.getFullYear() + 18, birthDate.getMonth(), birthDate.getDate())
   if (today < age18) {
     errAgeEl.hidden = false
+    errAgeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     return
   }
   errAgeEl.hidden = true
@@ -172,7 +175,6 @@ async function submitForm(e) {
   form.hidden = true
   document.getElementById('form-intro').hidden = true
   document.getElementById('form-success').hidden = false
-  applyLang(currentLang)
 }
 
 // ============================================================
