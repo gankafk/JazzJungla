@@ -11,6 +11,12 @@ const CONFIG = {
 // ============================================================
 let currentLang = localStorage.getItem('jjl-lang') || 'es'
 
+// Limitar fecha de nacimiento a hoy (no fechas futuras)
+document.addEventListener('DOMContentLoaded', () => {
+  const dobInput = document.getElementById('f-dob')
+  if (dobInput) dobInput.max = new Date().toISOString().split('T')[0]
+})
+
 // ============================================================
 // NAVBAR — efecto scroll
 // ============================================================
@@ -106,10 +112,11 @@ async function submitForm(e) {
   const errEl   = document.getElementById('form-error')
   const name    = form.name.value.trim()
   const email   = form.email.value.trim()
+  const dob     = form.dob.value
   const country = form.country.value
   const agree   = form.agree.checked
 
-  if (!name || !email || !country || !agree) {
+  if (!name || !email || !dob || !country || !agree) {
     errEl.hidden = false
     return
   }
@@ -118,7 +125,7 @@ async function submitForm(e) {
   // Número completo con prefijo (ej. +34612345678); window.itiPhone viene del script inline
   const phone = window.itiPhone ? window.itiPhone.getNumber() : form.phone.value.trim()
 
-  const payload = { name, email, country, phone }
+  const payload = { name, email, dob, country, phone }
 
   if (CONFIG.API_URL) {
     // ── CON BACKEND ──────────────────────────────────────────
