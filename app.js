@@ -108,19 +108,39 @@ document.querySelectorAll('input[name="edition"]').forEach(radio => {
 async function submitForm(e) {
   e.preventDefault()
 
-  const form    = document.getElementById('booking-form')
-  const errEl   = document.getElementById('form-error')
-  const name    = form.name.value.trim()
-  const email   = form.email.value.trim()
-  const dob     = form.dob.value
-  const country = form.country.value
-  const agree   = form.agree.checked
+  const form        = document.getElementById('booking-form')
+  const errEl       = document.getElementById('form-error')
+  const errEmailEl  = document.getElementById('form-error-email')
+  const errAgeEl    = document.getElementById('form-error-age')
+  const name        = form.name.value.trim()
+  const email       = form.email.value.trim()
+  const dob         = form.dob.value
+  const country     = form.country.value
+  const agree       = form.agree.checked
 
   if (!name || !email || !dob || !country || !agree) {
     errEl.hidden = false
+    errEmailEl.hidden = true
+    errAgeEl.hidden = true
     return
   }
   errEl.hidden = true
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(email)) {
+    errEmailEl.hidden = false
+    return
+  }
+  errEmailEl.hidden = true
+
+  const today     = new Date()
+  const birthDate = new Date(dob)
+  const age18     = new Date(birthDate.getFullYear() + 18, birthDate.getMonth(), birthDate.getDate())
+  if (today < age18) {
+    errAgeEl.hidden = false
+    return
+  }
+  errAgeEl.hidden = true
 
   // Número completo con prefijo (ej. +34612345678); window.itiPhone viene del script inline
   const phone = window.itiPhone ? window.itiPhone.getNumber() : form.phone.value.trim()
@@ -150,6 +170,7 @@ async function submitForm(e) {
   }
 
   form.hidden = true
+  document.getElementById('form-intro').hidden = true
   document.getElementById('form-success').hidden = false
   applyLang(currentLang)
 }
