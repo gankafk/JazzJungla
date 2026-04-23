@@ -103,6 +103,31 @@ document.querySelectorAll('input[name="edition"]').forEach(radio => {
 })
 
 // ============================================================
+// BOOKING — cards de alojamiento sincronizadas con el radio
+// ============================================================
+function selectAccommodation(value) {
+  document.querySelectorAll('.price-option').forEach(card => {
+    const isSelected = card.dataset.accommodation === value
+    card.classList.toggle('is-selected', isSelected)
+    card.setAttribute('aria-checked', String(isSelected))
+  })
+  const radio = document.querySelector(`input[name="accommodation"][value="${value}"]`)
+  if (radio && !radio.checked) radio.checked = true
+}
+
+document.querySelectorAll('.price-option').forEach(card => {
+  card.addEventListener('click', () => selectAccommodation(card.dataset.accommodation))
+})
+
+document.querySelectorAll('input[name="accommodation"]').forEach(radio => {
+  radio.addEventListener('change', () => selectAccommodation(radio.value))
+})
+
+// Inicializar según el radio marcado
+const initialAccommodation = document.querySelector('input[name="accommodation"]:checked')
+if (initialAccommodation) selectAccommodation(initialAccommodation.value)
+
+// ============================================================
 // BOOKING — formulario
 // ============================================================
 async function submitForm(e) {
@@ -148,7 +173,12 @@ async function submitForm(e) {
   // Número completo con prefijo (ej. +34612345678); window.itiPhone viene del script inline
   const phone = window.itiPhone ? window.itiPhone.getNumber() : form.phone.value.trim()
 
-  const payload = { name, email, dob, country, phone }
+  const edition       = form.edition.value
+  const accommodation = form.accommodation.value
+  const background    = form.background.value.trim()
+  const howHeard      = form.howHeard.value
+
+  const payload = { name, email, dob, country, phone, edition, accommodation, background, howHeard }
 
   if (CONFIG.API_URL) {
     // ── CON BACKEND ──────────────────────────────────────────
