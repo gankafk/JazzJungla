@@ -588,19 +588,6 @@ body:has(.mobile-menu.open) .navbar {
 .form-success .icon { font-size: 3rem; }
 .form-success h4, .form-intro h4 { font-size: 1.5rem; color: var(--jungle-mid); }
 .form-success p, .form-intro p { font-size: 1rem; max-width: 360px; text-align: center; }
-.tilopay-wrap { margin-top: 32px; padding-top: 32px; border-top: 1px solid var(--earth-light); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 24px; }
-.tilopay-wrap h3 { font-size: 1.5rem; }
-.tilopay-block { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 24px 32px; background: var(--gold-pale); border-radius: var(--radius-lg); border: 1px solid rgba(201,146,42,.3); }
-.tilopay-note { font-size: .85rem; color: var(--earth-mid); text-align: center; max-width: 380px; }
-.tilopay-btn {
-  display: inline-flex; align-items: center; gap: 12px;
-  background: var(--gold-rich); color: var(--white); border: none;
-  border-radius: var(--radius-full); padding: 16px 40px;
-  font-family: var(--font-body); font-size: 1.1rem; font-weight: 700;
-  letter-spacing: .04em; cursor: not-allowed; opacity: .65; box-shadow: var(--shadow-gold);
-}
-.tilopay-badge { font-size: .7rem; background: rgba(255,255,255,.25); padding: 2px 8px; border-radius: var(--radius-full); letter-spacing: .06em; text-transform: uppercase; }
-.tilopay-security { font-size: .75rem; color: var(--earth-mid); letter-spacing: .04em; }
 
 /* ============================================================
    PARTNERS & SPONSORS
