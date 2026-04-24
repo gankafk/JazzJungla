@@ -231,19 +231,26 @@ p { color: var(--text-mid); line-height: 1.85; }
   position: relative; min-height: 100svh;
   display: flex; align-items: center; justify-content: center; overflow: hidden;
   background: var(--jungle-deep);
-  /*
-    IMAGE PLACEHOLDER — HERO BACKGROUND
-    Cuando tengas la imagen, reemplaza background: var(--jungle-deep) por:
-    background-image: url('assets/images/hero/hero-bg.jpg');
-    background-size: cover; background-position: center;
-  */
+}
+/* Slideshow: cada .hero-slide es una capa absoluta con background-image */
+.hero-slides { position: absolute; inset: 0; z-index: 0; }
+.hero-slide {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out;
+  will-change: opacity;
+}
+.hero-slide.is-active { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide { transition: none; }
 }
 .hero-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(160deg, rgba(26,46,26,.75) 0%, rgba(45,80,22,.6) 40%, rgba(26,46,26,.85) 100%);
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(160deg, rgba(26,46,26,.65) 0%, rgba(45,80,22,.5) 40%, rgba(26,46,26,.8) 100%);
 }
 .hero-content {
-  position: relative; z-index: 1;
+  position: relative; z-index: 2;
   display: flex; flex-direction: column; align-items: center; text-align: center;
   gap: 20px; padding: calc(var(--navbar-h) + 48px) 24px 64px;
 }
@@ -456,11 +463,19 @@ p { color: var(--text-mid); line-height: 1.85; }
 .detail-price__note { font-size: .85rem; color: var(--text-light); }
 .price-options { display: flex; flex-direction: row; gap: 12px; margin-top: 4px; width: 100%; }
 .price-option {
+  /* Reset de estilos nativos del <button> (iOS Safari, Firefox móvil) */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  color: var(--text-dark);
+  font: inherit;
+  margin: 0;
   flex: 1 1 0; min-width: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
   padding: 18px 12px; background: var(--white);
   border: 2px solid var(--earth-light); border-radius: var(--radius-lg);
-  font-family: inherit; text-align: center; cursor: pointer;
+  text-align: center; cursor: pointer;
   transition: border-color var(--transition), background var(--transition), box-shadow var(--transition);
 }
 .price-option:hover { border-color: var(--jungle-bright); box-shadow: var(--shadow-md); }

@@ -238,3 +238,24 @@ const observer = new IntersectionObserver(
 document.querySelectorAll('.fade-in, .from-left, .from-right').forEach(el => {
   observer.observe(el)
 })
+
+// ============================================================
+// HERO SLIDESHOW — crossfade automático entre imágenes
+// ============================================================
+;(function initHeroSlides() {
+  const slides = document.querySelectorAll('.hero-slide')
+  if (slides.length < 2) return
+
+  // Respetar preferencia del sistema: si el usuario pidió menos movimiento, no rotar
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (reduceMotion) return
+
+  const INTERVAL_MS = 5500 // 5,5s por slide (incluye el cruce de 1,2s)
+  let i = 0
+
+  setInterval(() => {
+    slides[i].classList.remove('is-active')
+    i = (i + 1) % slides.length
+    slides[i].classList.add('is-active')
+  }, INTERVAL_MS)
+})()
