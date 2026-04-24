@@ -1,5 +1,5 @@
 // ============================================================
-// CONFIG — cuando tengas el backend, pon aquí la URL de tu API
+// CONFIG
 // ============================================================
 const CONFIG = {
   API_URL: 'https://6gzvqc6w44.execute-api.us-east-1.amazonaws.com/contacto'

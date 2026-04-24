@@ -126,6 +126,12 @@ p { color: var(--text-mid); line-height: 1.85; }
 }
 .navbar.transparent { background: transparent; }
 .navbar.scrolled    { background: var(--jungle-deep); box-shadow: var(--shadow-lg); }
+/* Mientras el menú móvil está abierto, el navbar mantiene fondo sólido
+   aunque estemos en la parte alta de la página (evita ver el hero detrás). */
+body:has(.mobile-menu.open) .navbar {
+  background: var(--jungle-deep);
+  box-shadow: var(--shadow-lg);
+}
 .navbar__inner {
   display: flex; align-items: center; height: 100%; gap: 24px;
 }
