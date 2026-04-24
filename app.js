@@ -169,8 +169,23 @@ async function submitForm(e) {
   }
   errAgeEl.hidden = true
 
-  // Número completo con prefijo (ej. +34612345678); window.itiPhone viene del script inline
-  const phone = window.itiPhone ? window.itiPhone.getNumber() : form.phone.value.trim()
+  // Número completo con prefijo (ej. +34612345678); window.itiPhone viene del script inline.
+  // Fallback defensivo: si utils.js de intl-tel-input aún no cargó, getNumber() puede devolver ""
+  // aunque el input tenga valor. En ese caso, construimos manualmente: + dialCode + dígitos crudos.
+  let phone = ''
+  const rawInput = form.phone.value.trim()
+  if (window.itiPhone) {
+    try { phone = window.itiPhone.getNumber() || '' } catch (_) { phone = '' }
+    if (!phone && rawInput) {
+      const digits = rawInput.replace(/\D/g, '')
+      let dialCode = ''
+      try { dialCode = (window.itiPhone.getSelectedCountryData() || {}).dialCode || '' } catch (_) {}
+      phone = digits ? (dialCode ? '+' + dialCode + digits : digits) : ''
+    }
+  } else {
+    phone = rawInput
+  }
+  console.log('[JJL] phone a enviar:', phone)
 
   const edition       = form.edition.value
   const accommodation = form.accommodation.value
