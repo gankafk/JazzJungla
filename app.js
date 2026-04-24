@@ -2,8 +2,7 @@
 // CONFIG — cuando tengas el backend, pon aquí la URL de tu API
 // ============================================================
 const CONFIG = {
-  // API_URL: 'https://tu-api-id.execute-api.eu-west-1.amazonaws.com/prod'
-  API_URL: null  // null = sin backend por ahora
+  API_URL: 'https://6gzvqc6w44.execute-api.us-east-1.amazonaws.com/contacto'
 }
 
 // ============================================================
@@ -178,28 +177,27 @@ async function submitForm(e) {
   const background    = form.background.value.trim()
   const howHeard      = form.howHeard.value
 
-  const payload = { name, email, dob, country, phone, edition, accommodation, background, howHeard }
+  const payload = { name, email, dob, country, phone, edition, accommodation, background, howHeard, consent: agree }
 
-  if (CONFIG.API_URL) {
-    // ── CON BACKEND ──────────────────────────────────────────
-    // Cuando conectes Lambda, descomenta este bloque:
-    /*
-    try {
-      const res = await fetch(CONFIG.API_URL + '/booking', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
-      if (!res.ok) throw new Error('Error del servidor')
-    } catch (err) {
-      errEl.textContent = 'Error al enviar. Inténtalo de nuevo.'
-      errEl.hidden = false
-      return
-    }
-    */
-  } else {
-    // ── SIN BACKEND (modo actual) ─────────────────────────────
-    console.log('Booking form (sin backend):', payload)
+  const submitBtn = form.querySelector('button[type="submit"]')
+  if (submitBtn) submitBtn.disabled = true
+
+  try {
+    const res = await fetch(CONFIG.API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    if (!res.ok) throw new Error('Error del servidor (' + res.status + ')')
+  } catch (err) {
+    console.error('Error al enviar el formulario:', err)
+    errEl.textContent = currentLang === 'es'
+      ? 'Error al enviar. Inténtalo de nuevo en unos minutos.'
+      : 'Submission failed. Please try again in a few minutes.'
+    errEl.hidden = false
+    errEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    if (submitBtn) submitBtn.disabled = false
+    return
   }
 
   form.hidden = true
