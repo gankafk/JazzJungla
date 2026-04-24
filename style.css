@@ -511,14 +511,42 @@ body:has(.mobile-menu.open) .navbar {
 .form-label .req { color: var(--gold-rich); }
 .form-input, .form-select, .form-textarea {
   width: 100%; padding: 12px 16px; font-family: var(--font-body); font-size: 1rem;
+  line-height: 1.3; min-height: 48px; box-sizing: border-box;
   color: var(--text-dark); background: var(--cream); border: 1.5px solid var(--earth-light);
-  border-radius: var(--radius-md); appearance: none;
+  border-radius: var(--radius-md); appearance: none; -webkit-appearance: none;
   transition: border-color .15s ease, box-shadow .15s ease;
 }
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   outline: none; border-color: var(--jungle-bright); box-shadow: 0 0 0 3px rgba(74,124,63,.15);
 }
 .form-textarea { resize: vertical; min-height: 100px; }
+
+/* ── Fix input[type="date"] en iOS Safari ───────────────────────
+   Problema: iOS pinta el placeholder nativo casi invisible, alinea
+   el texto a la derecha y colapsa la altura cuando está vacío.
+   Forzamos alineación izquierda, altura consistente y color legible. */
+input[type="date"].form-input {
+  min-height: 48px;
+  text-align: left;
+}
+input[type="date"].form-input::-webkit-date-and-time-value {
+  text-align: left;
+  min-height: 1.3em;
+}
+/* Placeholder visible cuando está vacío (required + sin valor = :invalid) */
+input[type="date"]:invalid::-webkit-datetime-edit {
+  color: var(--text-light);
+}
+input[type="date"]:valid::-webkit-datetime-edit {
+  color: var(--text-dark);
+}
+/* Firefox / otros navegadores sin shadow DOM del datetime-edit */
+input[type="date"]:invalid { color: var(--text-light); }
+input[type="date"]:valid   { color: var(--text-dark); }
+/* Quitamos el botón de limpiar nativo (sólo Edge/Chromium) si aparece desalineado */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
 
 /* ── intl-tel-input: integración visual ─────────────────────── */
 .iti { width: 100%; }
