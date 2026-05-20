@@ -432,6 +432,7 @@ body:has(.mobile-menu.open) .navbar {
 /* Location slider */
 .location-slider {
   position: relative;
+  min-height: 240px;
   aspect-ratio: 4/3;
   border-radius: var(--radius-xl);
   overflow: hidden;
