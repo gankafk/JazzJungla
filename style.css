@@ -429,14 +429,43 @@ body:has(.mobile-menu.open) .navbar {
 }
 .location-images { display: flex; flex-direction: column; gap: 20px; }
 .location-images .img-placeholder { aspect-ratio: 16/10; border-radius: var(--radius-xl); }
-.map-placeholder {
-  width: 100%; border-radius: var(--radius-lg); overflow: hidden;
+/* Location slider */
+.location-slider {
+  position: relative;
+  aspect-ratio: 4/3;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--jungle-mist);
 }
-.map-placeholder__inner { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 32px; }
-.map-placeholder__inner .icon { font-size: 3rem; }
-.map-placeholder__inner h4 { font-size: 1.25rem; color: var(--jungle-deep); }
-.map-placeholder__inner p { font-size: .9rem; color: var(--earth-mid); }
-.map-placeholder__inner .note { font-size: .75rem; background: rgba(255,255,255,.6); padding: 12px 16px; border-radius: var(--radius-md); color: var(--jungle-mid); font-weight: 600; }
+.lslider__slide {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  will-change: opacity;
+}
+.lslider__slide.is-active { opacity: 1; }
+.lslider__btn {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+  width: 40px; height: 40px;
+  background: rgba(26,46,26,.55); border: 1px solid rgba(255,255,255,.3);
+  border-radius: 50%; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+}
+.lslider__btn:hover { background: rgba(26,46,26,.85); }
+.lslider__btn--prev { left: 12px; }
+.lslider__btn--next { right: 12px; }
+.lslider__dots {
+  position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+  z-index: 10; display: flex; gap: 8px;
+}
+.lslider__dot {
+  width: 8px; height: 8px; border-radius: 50%; padding: 0;
+  background: rgba(255,255,255,.5);
+  transition: background var(--transition), transform var(--transition);
+}
+.lslider__dot.is-active { background: #fff; transform: scale(1.35); }
 
 /* ============================================================
    BOOKING
@@ -652,3 +681,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .footer-bottom { border-top: 1px solid rgba(255,255,255,.08); padding: 20px 0; }
 .footer-bottom-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
 .footer-copy { font-size: .75rem; color: rgba(250,246,238,.4); letter-spacing: .04em; }
+.footer-map {
+  border-radius: var(--radius-xl); overflow: hidden;
+  margin-bottom: 48px; opacity: .85;
+  transition: opacity var(--transition);
+}
+.footer-map:hover { opacity: 1; }

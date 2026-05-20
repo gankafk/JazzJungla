@@ -221,6 +221,37 @@ async function submitForm(e) {
 }
 
 // ============================================================
+// LOCATION SLIDESHOW
+// ============================================================
+;(function initLocationSlider() {
+  const slider = document.querySelector('.location-slider')
+  if (!slider) return
+  const slides = slider.querySelectorAll('.lslider__slide')
+  const dots   = slider.querySelectorAll('.lslider__dot')
+  if (slides.length < 2) return
+
+  let idx   = 0
+  let timer = null
+
+  function goTo(n) {
+    slides[idx].classList.remove('is-active')
+    dots[idx].classList.remove('is-active')
+    idx = (n + slides.length) % slides.length
+    slides[idx].classList.add('is-active')
+    dots[idx].classList.add('is-active')
+  }
+
+  function startAuto() { timer = setInterval(() => goTo(idx + 1), 4500) }
+  function resetAuto()  { clearInterval(timer); startAuto() }
+
+  slider.querySelector('.lslider__btn--next').addEventListener('click', () => { goTo(idx + 1); resetAuto() })
+  slider.querySelector('.lslider__btn--prev').addEventListener('click', () => { goTo(idx - 1); resetAuto() })
+  dots.forEach(d => d.addEventListener('click', () => { goTo(Number(d.dataset.idx)); resetAuto() }))
+
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) startAuto()
+})()
+
+// ============================================================
 // SCROLL ANIMATIONS — IntersectionObserver
 // ============================================================
 const observer = new IntersectionObserver(

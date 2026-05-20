@@ -380,19 +380,28 @@
           <span data-es='"Aquí, todo crece."' data-en='"Here, everythings grows."'>"Aquí, todo crece."</span>
         </blockquote>
       </div>
-      <div class="location-images from-right">
-        <img src="img/Huerta1.jpeg" alt="La Huerta Farm School" style="width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:var(--radius-xl);display:block">
-        <img src="img/Huerta2.png" alt="La Huerta Farm School — entorno" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:var(--radius-xl);display:block">
+      <div class="location-slider from-right">
+        <div class="lslider__slide is-active" style="background-image:url('img/Huerta.jpg')"></div>
+        <div class="lslider__slide" style="background-image:url('img/Huerta1.jpeg')"></div>
+        <div class="lslider__slide" style="background-image:url('img/huerta2.jpg')"></div>
+        <div class="lslider__slide" style="background-image:url('img/Huerta3.jpg')"></div>
+        <div class="lslider__slide" style="background-image:url('img/huerta4.jpg')"></div>
+        <div class="lslider__slide" style="background-image:url('img/Huerta5.png')"></div>
+        <button class="lslider__btn lslider__btn--prev" aria-label="Foto anterior">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="lslider__btn lslider__btn--next" aria-label="Foto siguiente">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="lslider__dots" aria-hidden="true">
+          <button class="lslider__dot is-active" data-idx="0"></button>
+          <button class="lslider__dot" data-idx="1"></button>
+          <button class="lslider__dot" data-idx="2"></button>
+          <button class="lslider__dot" data-idx="3"></button>
+          <button class="lslider__dot" data-idx="4"></button>
+          <button class="lslider__dot" data-idx="5"></button>
+        </div>
       </div>
-    </div>
-
-    <div class="map-placeholder fade-in">
-      <iframe
-        src="https://maps.google.com/maps?q=XGF5%2B9QX+San+Mateo+Alajuela+Costa+Rica&z=15&output=embed"
-        width="100%" height="420" style="border:0;border-radius:var(--radius-xl);display:block"
-        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-        title="La Huerta Farm School — XGF5+9QX, San Mateo, Alajuela, Costa Rica">
-      </iframe>
     </div>
   </div>
 </section>
@@ -595,6 +604,14 @@
         </ul>
       </div>
 
+    </div>
+    <div class="footer-map">
+      <iframe
+        src="https://maps.google.com/maps?q=XGF5%2B9QX+San+Mateo+Alajuela+Costa+Rica&z=15&output=embed"
+        width="100%" height="320" style="border:0;display:block"
+        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="La Huerta Farm School — XGF5+9QX, San Mateo, Alajuela, Costa Rica">
+      </iframe>
     </div>
   </div>
 
