@@ -179,8 +179,12 @@ body:has(.mobile-menu.open) .navbar {
 .hamburger {
   display: flex; flex-direction: column; justify-content: center; gap: 5px;
   width: 40px; height: 40px; padding: 8px; border-radius: var(--radius-md);
-  margin-left: auto; transition: background var(--transition);
+  margin-left: 6px; transition: background var(--transition);
 }
+.lang-btn--mobile-nav {
+  display: inline-flex; margin-left: auto;
+}
+@media (min-width: 1024px) { .lang-btn.lang-btn--mobile-nav { display: none; } }
 .hamburger:hover { background: rgba(255,255,255,.1); }
 @media (min-width: 1024px) { .hamburger { display: none; } }
 .hbar {
@@ -550,6 +554,11 @@ body:has(.mobile-menu.open) .navbar {
   outline: none; border-color: var(--jungle-bright); box-shadow: 0 0 0 3px rgba(74,124,63,.15);
 }
 .form-textarea { resize: vertical; min-height: 100px; }
+.form-counter {
+  display: block; text-align: right; font-size: .75rem;
+  color: var(--text-light); margin-top: 4px; font-variant-numeric: tabular-nums;
+}
+.form-counter.is-near { color: var(--gold-rich); font-weight: 700; }
 
 /* ── Fix input[type="date"] en iOS Safari ───────────────────────
    Problema: iOS pinta el placeholder nativo casi invisible, alinea

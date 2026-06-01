@@ -81,8 +81,10 @@
     </ul>
 
     <div class="navbar__actions">
-      <button class="lang-btn" id="lang-toggle-desktop" aria-label="Cambiar idioma">🇪🇸 ES | EN</button>
+      <button class="lang-btn" id="lang-toggle-desktop" aria-label="Cambiar idioma">ES | EN</button>
     </div>
+
+    <button class="lang-btn lang-btn--mobile-nav" id="lang-toggle-mobile-nav" aria-label="Cambiar idioma">ES | EN</button>
 
     <button class="hamburger" id="hamburger" aria-expanded="false" aria-label="Abrir menú">
       <span class="hbar"></span>
@@ -102,11 +104,6 @@
     <li><a href="#location" onclick="closeMobile()" data-es="Ubicación" data-en="Location">Ubicación</a></li>
     <li><a href="#booking" onclick="closeMobile()" data-es="Booking" data-en="Booking">Booking</a></li>
     <li><a href="#footer" onclick="closeMobile()" data-es="Contacto" data-en="Contact">Contacto</a></li>
-    <li>
-      <div class="mobile-lang">
-        <button class="lang-btn" id="lang-toggle-mobile" aria-label="Cambiar idioma">🇪🇸 ES | EN</button>
-      </div>
-    </li>
   </ul>
 </div>
 <div class="overlay" id="overlay"></div>
@@ -499,11 +496,11 @@
         <form class="form-body" id="booking-form" onsubmit="submitForm(event)" novalidate>
           <div class="form-group">
             <label class="form-label" for="f-name"><span data-es="Nombre completo" data-en="Full name">Nombre completo</span> <span class="req">*</span></label>
-            <input id="f-name" name="name" type="text" required class="form-input" placeholder="Tu nombre completo" autocomplete="name" />
+            <input id="f-name" name="name" type="text" required class="form-input" placeholder="Tu nombre completo" data-ph-es="Tu nombre completo" data-ph-en="Your full name" autocomplete="name" />
           </div>
           <div class="form-group">
             <label class="form-label" for="f-email"><span data-es="Correo electrónico" data-en="Email address">Correo electrónico</span> <span class="req">*</span></label>
-            <input id="f-email" name="email" type="email" required class="form-input" placeholder="tu@email.com" autocomplete="email" />
+            <input id="f-email" name="email" type="email" required class="form-input" placeholder="tu@email.com" data-ph-es="tu@email.com" data-ph-en="you@email.com" autocomplete="email" />
           </div>
           <div class="form-group">
             <label class="form-label" for="f-dob"><span data-es="Fecha de nacimiento" data-en="Date of birth">Fecha de nacimiento</span> <span class="req">*</span></label>
@@ -538,12 +535,13 @@
           </div>
           <div class="form-group">
             <label class="form-label" for="f-bg"><span data-es="Cuéntanos sobre tu experiencia musical" data-en="Tell us about your musical background">Cuéntanos sobre tu experiencia musical</span></label>
-            <textarea id="f-bg" name="background" rows="4" class="form-textarea" placeholder="¿Qué instrumento tocas? ¿Cuántos años llevas tocando?..."></textarea>
+            <textarea id="f-bg" name="background" rows="4" class="form-textarea" maxlength="4000" placeholder="¿Qué instrumento tocas? ¿Cuántos años llevas tocando?..." data-ph-es="¿Qué instrumento tocas? ¿Cuántos años llevas tocando?..." data-ph-en="What instrument do you play? How long have you been playing?..."></textarea>
+            <small class="form-counter" id="f-bg-counter" aria-live="polite">0 / 4000</small>
           </div>
           <div class="form-group">
             <label class="form-label" for="f-heard"><span data-es="¿Cómo nos encontraste?" data-en="How did you find us?">¿Cómo nos encontraste?</span></label>
             <select id="f-heard" name="howHeard" class="form-select">
-              <option value="">Selecciona una opción</option>
+              <option value="" data-es="Selecciona una opción" data-en="Select an option">Selecciona una opción</option>
               <option value="instagram">Instagram</option>
               <option value="referral" data-es="Recomendación" data-en="Recommendation">Recomendación</option>
               <option value="cyrille" data-es="Seguidores de Cyrille Aimée" data-en="Cyrille Aimée followers">Seguidores de Cyrille Aimée</option>
@@ -750,7 +748,7 @@
 </script>
 
 <!-- JavaScript -->
-<script src="app.js?v=4"></script>
+<script src="app.js?v=6"></script>
 
 </body>
 </html>

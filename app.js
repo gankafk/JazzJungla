@@ -8,12 +8,25 @@ const CONFIG = {
 // ============================================================
 // ESTADO GLOBAL
 // ============================================================
-let currentLang = localStorage.getItem('jjl-lang') || 'es'
+let currentLang = localStorage.getItem('jjl-lang') || 'en'
 
-// Limitar fecha de nacimiento a hoy (no fechas futuras)
+// Limitar fecha de nacimiento a hoy (no fechas futuras) + contador del textarea
 document.addEventListener('DOMContentLoaded', () => {
   const dobInput = document.getElementById('f-dob')
   if (dobInput) dobInput.max = new Date().toISOString().split('T')[0]
+
+  const bg = document.getElementById('f-bg')
+  const counter = document.getElementById('f-bg-counter')
+  if (bg && counter) {
+    const max = parseInt(bg.getAttribute('maxlength') || '4000', 10)
+    const update = () => {
+      const len = bg.value.length
+      counter.textContent = len + ' / ' + max
+      counter.classList.toggle('is-near', len > max * 0.9)
+    }
+    bg.addEventListener('input', update)
+    update()
+  }
 })
 
 // ============================================================
@@ -68,10 +81,18 @@ function applyLang(lang) {
     if (text != null) el.textContent = text
   })
 
-  const label = lang === 'es' ? '🇪🇸 ES | EN' : '🇬🇧 EN | ES'
-  ;['lang-toggle-desktop', 'lang-toggle-mobile', 'lang-toggle-footer'].forEach(id => {
+  // Placeholders bilingües de inputs/textarea (atributo placeholder, no textContent)
+  document.querySelectorAll('[data-ph-es], [data-ph-en]').forEach(el => {
+    const ph = el.getAttribute('data-ph-' + lang)
+    if (ph != null) el.setAttribute('placeholder', ph)
+  })
+
+  const flagES = '<img src="https://flagcdn.com/w20/es.png" alt="ES" width="20" height="14" style="vertical-align:middle;border-radius:2px;margin-right:3px">'
+  const flagGB = '<img src="https://flagcdn.com/w20/gb.png" alt="EN" width="20" height="14" style="vertical-align:middle;border-radius:2px;margin-right:3px">'
+  const label = lang === 'es' ? `${flagES}ES` : `${flagGB}EN`
+  ;['lang-toggle-desktop', 'lang-toggle-mobile-nav', 'lang-toggle-footer'].forEach(id => {
     const btn = document.getElementById(id)
-    if (btn) btn.textContent = label
+    if (btn) btn.innerHTML = label
   })
 }
 
@@ -80,7 +101,7 @@ function toggleLang() {
 }
 
 document.getElementById('lang-toggle-desktop').addEventListener('click', toggleLang)
-document.getElementById('lang-toggle-mobile').addEventListener('click', toggleLang)
+document.getElementById('lang-toggle-mobile-nav').addEventListener('click', toggleLang)
 document.getElementById('lang-toggle-footer').addEventListener('click', toggleLang)
 
 // Aplicar idioma al cargar
@@ -197,18 +218,30 @@ async function submitForm(e) {
   const submitBtn = form.querySelector('button[type="submit"]')
   if (submitBtn) submitBtn.disabled = true
 
+  const fallbackMsg = currentLang === 'es'
+    ? 'Error al enviar. Inténtalo de nuevo en unos minutos.'
+    : 'Submission failed. Please try again in a few minutes.'
+
   try {
     const res = await fetch(CONFIG.API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     })
-    if (!res.ok) throw new Error('Error del servidor (' + res.status + ')')
+    if (!res.ok) {
+      // Si la Lambda devolvió un error con mensaje legible, lo usamos en lugar del genérico
+      let serverMsg = ''
+      try {
+        const data = await res.json()
+        if (data && typeof data.error === 'string') serverMsg = data.error
+      } catch (_) { /* respuesta no era JSON */ }
+      const e = new Error(serverMsg || ('Error del servidor (' + res.status + ')'))
+      e.fromServer = !!serverMsg
+      throw e
+    }
   } catch (err) {
     console.error('Error al enviar el formulario:', err)
-    errEl.textContent = currentLang === 'es'
-      ? 'Error al enviar. Inténtalo de nuevo en unos minutos.'
-      : 'Submission failed. Please try again in a few minutes.'
+    errEl.textContent = err && err.fromServer ? err.message : fallbackMsg
     errEl.hidden = false
     errEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     if (submitBtn) submitBtn.disabled = false

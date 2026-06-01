@@ -19,7 +19,7 @@ MAX_LENGTHS = {
     'email': 150,
     'country': 80,
     'phone': 30,
-    'background': 2000,
+    'background': 4000,
     'howHeard': 80
 }
 
