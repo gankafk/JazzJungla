@@ -149,7 +149,7 @@ El proyecto está optimizado para coste mínimo (todo dentro del free tier de AW
 
 ### Configuración
 
-El frontend lee su única variable de configuración al inicio de `app.js`:
+El frontend declara su única constante de configuración al inicio de `app.js`:
 
 ```js
 const CONFIG = {
@@ -157,9 +157,9 @@ const CONFIG = {
 }
 ```
 
-Sustituye `<API_GATEWAY_ID>` por el de tu HTTP API antes de desplegar.
+El placeholder `<API_GATEWAY_ID>` corresponde al identificador de la HTTP API desplegada.
 
-Las dos Lambdas no requieren variables de entorno — todas las constantes (nombre de tabla, region SES, remitente, destinatarios) están al inicio de cada archivo `lambdas/*.py` para una lectura directa.
+Las dos Lambdas no requieren variables de entorno: las constantes (nombre de tabla, región de SES, remitente, destinatarios) están declaradas al inicio de cada archivo `lambdas/*.py`.
 
 ### Despliegue
 
@@ -167,18 +167,18 @@ Las dos Lambdas no requieren variables de entorno — todas las constantes (nomb
 
 ```bash
 # 1. Sincronizar archivos a S3
-aws s3 cp index.html  s3://<TU_BUCKET>/index.html  --cache-control "max-age=60"
-aws s3 cp app.js      s3://<TU_BUCKET>/app.js      --cache-control "max-age=300"
-aws s3 cp style.css   s3://<TU_BUCKET>/style.css   --cache-control "max-age=300"
-aws s3 sync img/      s3://<TU_BUCKET>/img/        --cache-control "max-age=86400"
+aws s3 cp index.html  s3://<S3_BUCKET>/index.html  --cache-control "max-age=60"
+aws s3 cp app.js      s3://<S3_BUCKET>/app.js      --cache-control "max-age=300"
+aws s3 cp style.css   s3://<S3_BUCKET>/style.css   --cache-control "max-age=300"
+aws s3 sync img/      s3://<S3_BUCKET>/img/        --cache-control "max-age=86400"
 
 # 2. Invalidar CloudFront
 aws cloudfront create-invalidation \
-  --distribution-id <TU_DISTRIBUTION_ID> \
+  --distribution-id <CLOUDFRONT_DISTRIBUTION_ID> \
   --paths "/index.html" "/app.js" "/style.css"
 ```
 
-> Cuando edites `app.js`, recuerda bumpear el cache-buster `app.js?v=N` en `index.html` para forzar recarga incluso si el navegador respeta cabeceras agresivas.
+> Cada cambio en `app.js` requiere incrementar el cache-buster `app.js?v=N` en `index.html` para forzar la recarga ante cabeceras de caché agresivas en CDN o navegador.
 
 #### Lambdas
 
@@ -214,11 +214,11 @@ Detalles paso a paso en [`ARCHITECTURE.md`](./ARCHITECTURE.md):
 
 ### Troubleshooting
 
-**El formulario muestra "Error al enviar..." pero CloudWatch dice que la Lambda terminó OK.**
-La Lambda devolvió un 400 por una validación (background > 4000, email mal, edad < 18, etc.). Revisa los logs `Body recibido:` y `Body parseado:` del CloudWatch del log group `/aws/lambda/contactos-jazzenlajungla`. Desde la versión `?v=5` de `app.js`, el mensaje específico del backend se muestra al usuario.
+**El formulario muestra "Error al enviar..." pero CloudWatch indica que la Lambda terminó OK.**
+La Lambda devolvió un 400 por una validación (background > 4000, email mal formado, edad < 18, etc.). Las líneas `Body recibido:` y `Body parseado:` del log group `/aws/lambda/contactos-jazzenlajungla` muestran el payload exacto. Desde la versión `app.js?v=5`, el mensaje específico del backend se propaga al usuario.
 
 **El teléfono llega vacío a DynamoDB.**
-`intl-tel-input` puede devolver `""` desde `getNumber()` si `utils.js` aún no terminó de cargar. El frontend tiene un fallback que reconstruye el número con `dialCode + dígitos`. Si pese a eso llega vacío, revisa la consola del navegador: el `console.log('[JJL] phone a enviar:', phone)` te dice qué se está mandando realmente.
+`intl-tel-input` puede devolver `""` desde `getNumber()` si `utils.js` aún no terminó de cargar. El frontend incluye un fallback que reconstruye el número con `dialCode + dígitos`. Si pese a ello el campo llega vacío, el `console.log('[JJL] phone a enviar:', phone)` deja visible en la consola del navegador el valor exacto enviado.
 
 **El preview de WhatsApp solo funciona con `http://www.jazzenlajungla.com`.**
 Tres capas combinadas: caché del scraper de Facebook (afecta también a WhatsApp), GoDaddy Domain Forwarding del apex sin SSL, y `og:url` mal apuntado. Solución: usar `og:url` `https://www.…/`, activar SSL forwarding en GoDaddy, y forzar re-scrape en `developers.facebook.com/tools/debug/`.
@@ -351,7 +351,7 @@ The project is optimized for minimal cost (everything inside AWS free tier) and 
 
 ### Configuration
 
-Frontend reads its single configuration constant at the top of `app.js`:
+The frontend declares its single configuration constant at the top of `app.js`:
 
 ```js
 const CONFIG = {
@@ -359,9 +359,9 @@ const CONFIG = {
 }
 ```
 
-Replace `<API_GATEWAY_ID>` with your HTTP API's ID before deploying.
+The `<API_GATEWAY_ID>` placeholder corresponds to the identifier of the deployed HTTP API.
 
-The Lambdas do not require environment variables — all constants (table name, SES region, sender, recipients) live at the top of each `lambdas/*.py` file for direct reading.
+The Lambdas do not require environment variables: all constants (table name, SES region, sender, recipients) are declared at the top of each `lambdas/*.py` file.
 
 ### Deployment
 
@@ -369,18 +369,18 @@ The Lambdas do not require environment variables — all constants (table name, 
 
 ```bash
 # 1. Sync files to S3
-aws s3 cp index.html  s3://<YOUR_BUCKET>/index.html  --cache-control "max-age=60"
-aws s3 cp app.js      s3://<YOUR_BUCKET>/app.js      --cache-control "max-age=300"
-aws s3 cp style.css   s3://<YOUR_BUCKET>/style.css   --cache-control "max-age=300"
-aws s3 sync img/      s3://<YOUR_BUCKET>/img/        --cache-control "max-age=86400"
+aws s3 cp index.html  s3://<S3_BUCKET>/index.html  --cache-control "max-age=60"
+aws s3 cp app.js      s3://<S3_BUCKET>/app.js      --cache-control "max-age=300"
+aws s3 cp style.css   s3://<S3_BUCKET>/style.css   --cache-control "max-age=300"
+aws s3 sync img/      s3://<S3_BUCKET>/img/        --cache-control "max-age=86400"
 
 # 2. Invalidate CloudFront
 aws cloudfront create-invalidation \
-  --distribution-id <YOUR_DISTRIBUTION_ID> \
+  --distribution-id <CLOUDFRONT_DISTRIBUTION_ID> \
   --paths "/index.html" "/app.js" "/style.css"
 ```
 
-> When you edit `app.js`, remember to bump the cache-buster `app.js?v=N` in `index.html` to force a reload even if the browser respects aggressive caching headers.
+> Every change to `app.js` requires incrementing the cache-buster `app.js?v=N` in `index.html` to force a reload against aggressive caching headers at the CDN or browser.
 
 #### Lambdas
 
@@ -416,11 +416,11 @@ Step-by-step details in [`ARCHITECTURE.md`](./ARCHITECTURE.md):
 
 ### Troubleshooting <a id="troubleshooting-en"></a>
 
-**Form shows "Submission failed..." but CloudWatch says the Lambda finished OK.**
-The Lambda returned a 400 due to validation (background > 4000, malformed email, age < 18, etc.). Check `Body recibido:` and `Body parseado:` log lines in CloudWatch log group `/aws/lambda/contactos-jazzenlajungla`. Since `app.js?v=5`, the backend's specific error message is shown to the user.
+**The form shows "Submission failed..." but CloudWatch indicates that the Lambda finished OK.**
+The Lambda returned a 400 due to validation (background > 4000, malformed email, age < 18, etc.). The `Body recibido:` and `Body parseado:` log lines in CloudWatch log group `/aws/lambda/contactos-jazzenlajungla` contain the exact payload received. Since `app.js?v=5`, the backend-specific error message is propagated to the user.
 
-**Phone is empty in DynamoDB.**
-`intl-tel-input` may return `""` from `getNumber()` if `utils.js` hasn't fully loaded. The frontend has a fallback that reconstructs the number with `dialCode + digits`. If still empty, check the browser console: `console.log('[JJL] phone a enviar:', phone)` tells you what is actually being sent.
+**Phone arrives empty in DynamoDB.**
+`intl-tel-input` may return `""` from `getNumber()` if `utils.js` has not fully loaded. The frontend includes a fallback that reconstructs the number with `dialCode + digits`. If the field still arrives empty, the `console.log('[JJL] phone a enviar:', phone)` line exposes the actual value sent in the browser console.
 
 **WhatsApp preview only works with `http://www.jazzenlajungla.com`.**
 Three combined causes: Facebook scraper cache (also affects WhatsApp), GoDaddy apex Domain Forwarding without SSL, and `og:url` pointing wrong. Fix: set `og:url` to `https://www.…/`, enable SSL forwarding in GoDaddy, force re-scrape at `developers.facebook.com/tools/debug/`.

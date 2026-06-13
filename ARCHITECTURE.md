@@ -108,7 +108,7 @@ The site is 100 % **serverless**: no self-managed servers. All infrastructure is
 
 | Parámetro | Valor |
 |---|---|
-| Bucket name | `<TU_BUCKET>` (privado) |
+| Bucket name | `<S3_BUCKET>` (privado) |
 | Acceso público | Bloqueado a nivel de bucket |
 | Acceso desde CloudFront | Vía OAC (Origin Access Control) |
 | Versionado | Desactivado |
@@ -124,7 +124,7 @@ The site is 100 % **serverless**: no self-managed servers. All infrastructure is
     "Effect": "Allow",
     "Principal": { "Service": "cloudfront.amazonaws.com" },
     "Action": "s3:GetObject",
-    "Resource": "arn:aws:s3:::<TU_BUCKET>/*",
+    "Resource": "arn:aws:s3:::<S3_BUCKET>/*",
     "Condition": {
       "StringEquals": {
         "AWS:SourceArn": "arn:aws:cloudfront::<ACCOUNT_ID>:distribution/<DIST_ID>"
@@ -317,7 +317,7 @@ Decidido para evitar coste de mantenimiento de dependencias (npm audit, deprecat
 
 ### 7.2 HTTP API en lugar de REST API
 
-API Gateway HTTP API es ~70 % más barato y suficiente para nuestro caso de uso (un solo `POST`, sin necesidad de modelos avanzados ni respuestas binarias).
+API Gateway HTTP API es ~70 % más barato y cubre los requisitos del proyecto (un único `POST`, sin necesidad de modelos avanzados ni respuestas binarias).
 
 ### 7.3 DynamoDB on-demand
 
