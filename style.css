@@ -418,6 +418,26 @@ body:has(.mobile-menu.open) .navbar {
 .faculty-info .role { font-size: .8rem; font-weight: 700; color: var(--jungle-light); letter-spacing: .06em; }
 .faculty-info p { font-size: .85rem; color: rgba(250,246,238,.6); }
 
+/* Artistas: mostrar solo 3 por defecto, botón "Ver más" despliega el resto */
+.faculty-card.is-extra { display: none; }
+.faculty-grid.is-expanded .faculty-card.is-extra { display: flex; flex-direction: column; }
+.faculty-toggle-wrap { display: flex; justify-content: center; margin-top: 40px; }
+.faculty-toggle {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 28px;
+  background: transparent; color: var(--gold-bright);
+  border: 1.5px solid var(--gold-bright); border-radius: var(--radius-full);
+  font-family: var(--font-body); font-size: .9rem; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase; cursor: pointer;
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+.faculty-toggle:hover { background: var(--gold-bright); color: var(--jungle-deep); }
+.faculty-toggle:focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; }
+.faculty-toggle__icon { transition: transform .25s ease; }
+.faculty-toggle[aria-expanded="true"] .faculty-toggle__icon { transform: rotate(180deg); }
+.faculty-toggle[aria-expanded="false"] .faculty-toggle__less { display: none; }
+.faculty-toggle[aria-expanded="true"]  .faculty-toggle__more { display: none; }
+
 /* ============================================================
    LOCATION
    ============================================================ */

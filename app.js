@@ -323,3 +323,26 @@ document.querySelectorAll('.fade-in, .from-left, .from-right').forEach(el => {
     slides[i].classList.add('is-active')
   }, INTERVAL_MS)
 })()
+
+// ============================================================
+// ARTISTAS — Ver más / Ver menos
+// Por defecto la grid muestra solo los 3 primeros; el botón expande el resto.
+// ============================================================
+;(function initFacultyToggle() {
+  const btn  = document.getElementById('faculty-toggle')
+  const grid = document.getElementById('faculty-grid')
+  if (!btn || !grid) return
+
+  btn.addEventListener('click', () => {
+    const willExpand = !grid.classList.contains('is-expanded')
+    grid.classList.toggle('is-expanded', willExpand)
+    btn.setAttribute('aria-expanded', String(willExpand))
+
+    // Al colapsar, devolver el foco al principio de la sección para no dejar
+    // al usuario perdido al final de una zona que se ha encogido.
+    if (!willExpand) {
+      const section = document.getElementById('artists')
+      if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  })
+})()
