@@ -1,17 +1,23 @@
 import boto3
 import csv
 import io
+import os
 from datetime import datetime, timezone, timedelta
 from botocore.exceptions import ClientError
 
-# Configuración
-TABLE_NAME = 'Contactos-jazzenlajungla'
-SENDER = 'jazzenlajungla@gmail.com'  # Identidad verificada como remitente
-RECIPIENT = 'jazzenlajungla@gmail.com'  # Identidad verificada como destinatario
-AWS_REGION = 'us-east-1'
+# Configuración vía variables de entorno de Lambda. Los valores por defecto
+# reflejan el entorno actual y permiten ejecutar la función sin definir env
+# vars, pero producción debería sobreescribirlos desde la consola / IaC.
+TABLE_NAME = os.environ.get('DYNAMO_TABLE',   'Contactos-jazzenlajungla')
+SENDER     = os.environ.get('SES_SENDER',     'jazzenlajungla@gmail.com')
+SES_REGION = os.environ.get('SES_REGION',     'us-east-1')
+
+# Destinatarios separados por coma en la env var: "a@x.com, b@y.com"
+_recipients_raw = os.environ.get('SES_RECIPIENTS', 'jazzenlajungla@gmail.com')
+RECIPIENTS = [r.strip() for r in _recipients_raw.split(',') if r.strip()]
 
 dynamodb = boto3.resource('dynamodb')
-ses = boto3.client('ses', region_name=AWS_REGION)
+ses = boto3.client('ses', region_name=SES_REGION)
 table = dynamodb.Table(TABLE_NAME)
 
 
@@ -114,7 +120,7 @@ def enviar_email_con_csv(csv_content, stats):
     msg = MIMEMultipart()
     msg['Subject'] = f'Reporte diario Jazz en la Jungla - {fecha}'
     msg['From'] = SENDER
-    msg['To'] = RECIPIENT
+    msg['To'] = ', '.join(RECIPIENTS)
     
     # Cuerpo del email en HTML
     cuerpo_html = f"""
@@ -166,7 +172,7 @@ def enviar_email_con_csv(csv_content, stats):
     try:
         response = ses.send_raw_email(
             Source=SENDER,
-            Destinations=[RECIPIENT],
+            Destinations=RECIPIENTS,
             RawMessage={'Data': msg.as_string()}
         )
         print(f"Email enviado. MessageId: {response['MessageId']}")

@@ -4,10 +4,14 @@
 >
 > Official website and registration platform for the **Jazz en la Jungla** music retreat at La Huerta Farm School, San Mateo, Alajuela, Costa Rica.
 
+**🌐 Live site · Sitio en producción:** [https://www.jazzenlajungla.com](https://www.jazzenlajungla.com)
+
 ![Status](https://img.shields.io/badge/status-active-success)
 ![Stack](https://img.shields.io/badge/stack-AWS%20Serverless-orange)
 ![Frontend](https://img.shields.io/badge/frontend-Vanilla%20JS-yellow)
 ![License](https://img.shields.io/badge/license-MIT-blue)
+
+![Jazz en la Jungla · captura del sitio](./img/web/web-screenshot.png)
 
 ---
 
@@ -149,7 +153,7 @@ El proyecto está optimizado para coste mínimo (todo dentro del free tier de AW
 
 ### Configuración
 
-El frontend declara su única constante de configuración al inicio de `app.js`:
+**Frontend**. El único parámetro configurable vive al inicio de `app.js`:
 
 ```js
 const CONFIG = {
@@ -159,7 +163,22 @@ const CONFIG = {
 
 El placeholder `<API_GATEWAY_ID>` corresponde al identificador de la HTTP API desplegada.
 
-Las dos Lambdas no requieren variables de entorno: las constantes (nombre de tabla, región de SES, remitente, destinatarios) están declaradas al inicio de cada archivo `lambdas/*.py`.
+**Lambdas**. La configuración se lee de variables de entorno; los valores por defecto reflejan el entorno actual y permiten arrancar sin definirlas, pero producción debería sobreescribirlas desde la consola de Lambda o desde IaC.
+
+| Variable | Lambda | Default |
+|---|---|---|
+| `DYNAMO_TABLE` | ambas | `Contactos-jazzenlajungla` |
+| `SES_SENDER` | `reporte-diario-jazzenlajungla` | `jazzenlajungla@gmail.com` |
+| `SES_RECIPIENTS` | `reporte-diario-jazzenlajungla` | `jazzenlajungla@gmail.com` (lista separada por comas) |
+| `SES_REGION` | `reporte-diario-jazzenlajungla` | `us-east-1` |
+
+Ejemplo de despliegue con env vars:
+
+```bash
+aws lambda update-function-configuration \
+  --function-name reporte-diario-jazzenlajungla \
+  --environment "Variables={DYNAMO_TABLE=Contactos-jazzenlajungla,SES_SENDER=reportes@jazzenlajungla.com,SES_RECIPIENTS=socio1@ejemplo.com,socio2@ejemplo.com,SES_REGION=us-east-1}"
+```
 
 ### Despliegue
 
@@ -231,11 +250,15 @@ iOS Safari pinta el placeholder nativo con opacidad casi imperceptible. El CSS a
 
 ### Roadmap
 
-- [ ] Activar SSL forwarding en GoDaddy para que `https://jazzenlajungla.com` (apex) también muestre preview de redes sociales.
-- [ ] Salir del sandbox de Amazon SES (production access) para enviar emails de confirmación a clientes no verificados.
-- [ ] Verificar el dominio `jazzenlajungla.com` en SES y migrar el remitente del reporte a `reportes@jazzenlajungla.com` (más SPF + MAIL FROM en GoDaddy).
-- [ ] Mecanismo para que el equipo cambie el estado de las solicitudes (`pendiente` → `contactada` → `confirmada`) sin tocar DynamoDB directamente. Opciones en estudio: enlaces firmados HMAC en el email del reporte, mini panel admin con Basic Auth, o sync con Google Sheet.
-- [ ] Filtrar el CSV diario para mostrar solo solicitudes en estado `pendiente`.
+- [ ] **Protección anti-abuso del formulario**. Actualmente el endpoint `POST /contacto` es público sin rate limiting, CAPTCHA ni honeypot: un actor malicioso podría spamear la tabla. Añadir: (a) campo honeypot oculto que descarte envíos automatizados, (b) throttling por IP en API Gateway o WAF con regla de rate limiting, (c) captura del `User-Agent` y patrones sospechosos, (d) alarma en CloudWatch sobre picos anómalos de invocación.
+- [ ] **Migrar la configuración de las Lambdas a AWS Systems Manager Parameter Store**. Las env vars son un primer paso; SSM permite rotación sin redeploy y separación de config sensible.
+- [ ] **Tests automáticos y CI**. Añadir suite `pytest` cubriendo las validaciones de `dynamodb-lambda.py` (regex email, edad ≥ 18, longitudes, campos obligatorios) y el generador de CSV de `reporte-diario-lambda.py`. Integrar en GitHub Actions con badge de build en el README.
+- [ ] **Dead-Letter Queue y alarmas**. La Lambda del reporte diario falla en silencio si SES o DynamoDB tienen un problema puntual. Configurar DLQ (SQS) y alarma de CloudWatch sobre `Errors > 0` de ambas Lambdas.
+- [ ] **CSV diferencial**. Sustituir `table.scan()` del reporte diario por `query` con GSI `estado-fecha_creacion-index` filtrando `estado = pendiente`. `scan` es aceptable a la escala actual (decenas de items) pero se convierte en O(n) sobre toda la tabla en el futuro.
+- [ ] **Activar SSL forwarding en GoDaddy** para que `https://jazzenlajungla.com` (apex) también muestre preview de redes sociales.
+- [ ] **Salir del sandbox de Amazon SES** (production access) para enviar emails de confirmación a clientes no verificados.
+- [ ] **Verificar el dominio `jazzenlajungla.com` en SES** y migrar el remitente del reporte a `reportes@jazzenlajungla.com` (más SPF + MAIL FROM en GoDaddy).
+- [ ] **Mecanismo para que el equipo cambie el estado de las solicitudes** (`pendiente` → `contactada` → `confirmada`) sin tocar DynamoDB directamente. Opciones en estudio: enlaces firmados HMAC en el email del reporte, mini panel admin con Basic Auth, o sync con Google Sheet.
 
 ### Créditos
 
@@ -351,7 +374,7 @@ The project is optimized for minimal cost (everything inside AWS free tier) and 
 
 ### Configuration
 
-The frontend declares its single configuration constant at the top of `app.js`:
+**Frontend**. The single configurable parameter lives at the top of `app.js`:
 
 ```js
 const CONFIG = {
@@ -361,7 +384,22 @@ const CONFIG = {
 
 The `<API_GATEWAY_ID>` placeholder corresponds to the identifier of the deployed HTTP API.
 
-The Lambdas do not require environment variables: all constants (table name, SES region, sender, recipients) are declared at the top of each `lambdas/*.py` file.
+**Lambdas**. Configuration is read from environment variables; the defaults reflect the current environment and allow the functions to run without them, but production should override them from the Lambda console or from IaC.
+
+| Variable | Lambda | Default |
+|---|---|---|
+| `DYNAMO_TABLE` | both | `Contactos-jazzenlajungla` |
+| `SES_SENDER` | `reporte-diario-jazzenlajungla` | `jazzenlajungla@gmail.com` |
+| `SES_RECIPIENTS` | `reporte-diario-jazzenlajungla` | `jazzenlajungla@gmail.com` (comma-separated list) |
+| `SES_REGION` | `reporte-diario-jazzenlajungla` | `us-east-1` |
+
+Example deployment with env vars:
+
+```bash
+aws lambda update-function-configuration \
+  --function-name reporte-diario-jazzenlajungla \
+  --environment "Variables={DYNAMO_TABLE=Contactos-jazzenlajungla,SES_SENDER=reportes@jazzenlajungla.com,SES_RECIPIENTS=partner1@example.com,partner2@example.com,SES_REGION=us-east-1}"
+```
 
 ### Deployment
 
@@ -433,11 +471,15 @@ iOS Safari renders the native placeholder with nearly invisible opacity. The CSS
 
 ### Roadmap <a id="roadmap-en"></a>
 
-- [ ] Enable SSL forwarding in GoDaddy so `https://jazzenlajungla.com` (apex) also shows social previews.
-- [ ] Move out of Amazon SES sandbox (production access) to send confirmation emails to unverified customers.
-- [ ] Verify the `jazzenlajungla.com` domain in SES and migrate the report sender to `reportes@jazzenlajungla.com` (plus SPF + MAIL FROM in GoDaddy).
-- [ ] Mechanism for the team to update request status (`pending` → `contacted` → `confirmed`) without touching DynamoDB directly. Options under study: HMAC-signed links in report emails, mini admin panel with Basic Auth, or Google Sheet sync.
-- [ ] Filter the daily CSV to include only `pending` submissions.
+- [ ] **Anti-abuse protection for the form**. The `POST /contacto` endpoint is currently public with no rate limiting, CAPTCHA, or honeypot: a malicious actor could spam the table. Plan: (a) hidden honeypot field to discard automated submissions, (b) per-IP throttling in API Gateway or a WAF rate-limit rule, (c) `User-Agent` capture and suspicious-pattern detection, (d) CloudWatch alarm on abnormal invocation spikes.
+- [ ] **Migrate Lambda configuration to AWS Systems Manager Parameter Store**. Environment variables are a first step; SSM allows rotation without redeploy and separation of sensitive configuration.
+- [ ] **Automated tests and CI**. Add a `pytest` suite covering the validations of `dynamodb-lambda.py` (email regex, age ≥ 18, lengths, required fields) and the CSV generator of `reporte-diario-lambda.py`. Wire it up to GitHub Actions with a build badge in the README.
+- [ ] **Dead-Letter Queue and alarms**. The daily report Lambda fails silently if SES or DynamoDB have a transient issue. Configure DLQ (SQS) and CloudWatch alarms on `Errors > 0` for both Lambdas.
+- [ ] **Differential CSV**. Replace `table.scan()` in the daily report with `query` on a GSI `estado-fecha_creacion-index` filtering `estado = pendiente`. `scan` is acceptable at the current scale (tens of items) but becomes O(n) over the whole table as volume grows.
+- [ ] **Enable SSL forwarding in GoDaddy** so `https://jazzenlajungla.com` (apex) also shows social previews.
+- [ ] **Move out of Amazon SES sandbox** (production access) to send confirmation emails to unverified customers.
+- [ ] **Verify the `jazzenlajungla.com` domain in SES** and migrate the report sender to `reportes@jazzenlajungla.com` (plus SPF + MAIL FROM in GoDaddy).
+- [ ] **Mechanism for the team to update request status** (`pending` → `contacted` → `confirmed`) without touching DynamoDB directly. Options under study: HMAC-signed links in report emails, mini admin panel with Basic Auth, or Google Sheet sync.
 
 ### Credits
 

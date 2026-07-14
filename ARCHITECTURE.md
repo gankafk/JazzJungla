@@ -165,19 +165,37 @@ The site is 100 % **serverless**: no self-managed servers. All infrastructure is
 | Arquitectura | x86_64 |
 | Memoria | 128 MB |
 | Timeout | 10 s |
-| Variables de entorno | Ninguna |
+| Variables de entorno | `DYNAMO_TABLE` |
 | Trigger | API Gateway `POST /contacto` |
-| Rol IAM | Permisos sobre la tabla DynamoDB |
+| Rol IAM | `dynamodb:PutItem` únicamente sobre la tabla concreta |
 
-**Permisos IAM mínimos**:
+**Política IAM mínima** (principio de mínimo privilegio):
 
 ```json
 {
-  "Effect": "Allow",
-  "Action": ["dynamodb:PutItem"],
-  "Resource": "arn:aws:dynamodb:us-east-1:<ACCOUNT_ID>:table/Contactos-jazzenlajungla"
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PutContactos",
+      "Effect": "Allow",
+      "Action": ["dynamodb:PutItem"],
+      "Resource": "arn:aws:dynamodb:us-east-1:<ACCOUNT_ID>:table/Contactos-jazzenlajungla"
+    },
+    {
+      "Sid": "Logs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:us-east-1:<ACCOUNT_ID>:log-group:/aws/lambda/contactos-jazzenlajungla:*"
+    }
+  ]
 }
 ```
+
+Sin `dynamodb:Scan`, `Query`, `UpdateItem` ni `DeleteItem`: la función solo crea registros.
 
 ### 3.5 AWS Lambda — `reporte-diario-jazzenlajungla`
 
@@ -187,9 +205,48 @@ The site is 100 % **serverless**: no self-managed servers. All infrastructure is
 | Arquitectura | x86_64 |
 | Memoria | 256 MB (margen para construir CSV) |
 | Timeout | 30 s |
-| Variables de entorno | Ninguna |
+| Variables de entorno | `DYNAMO_TABLE`, `SES_SENDER`, `SES_RECIPIENTS`, `SES_REGION` |
 | Trigger | EventBridge Scheduler |
-| Rol IAM | `dynamodb:Scan` + `ses:SendRawEmail` |
+| Rol IAM | Ver política a continuación |
+
+**Política IAM mínima**:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ScanContactos",
+      "Effect": "Allow",
+      "Action": ["dynamodb:Scan"],
+      "Resource": "arn:aws:dynamodb:us-east-1:<ACCOUNT_ID>:table/Contactos-jazzenlajungla"
+    },
+    {
+      "Sid": "SendReportEmail",
+      "Effect": "Allow",
+      "Action": ["ses:SendRawEmail"],
+      "Resource": "arn:aws:ses:us-east-1:<ACCOUNT_ID>:identity/jazzenlajungla@gmail.com",
+      "Condition": {
+        "StringEquals": {
+          "ses:FromAddress": "jazzenlajungla@gmail.com"
+        }
+      }
+    },
+    {
+      "Sid": "Logs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:us-east-1:<ACCOUNT_ID>:log-group:/aws/lambda/reporte-diario-jazzenlajungla:*"
+    }
+  ]
+}
+```
+
+El `Resource` de SES restringe el envío a la identidad verificada concreta; la `Condition` fuerza que el `From` coincida con esa identidad y bloquea envíos suplantando otras direcciones.
 
 ### 3.6 Amazon DynamoDB
 
@@ -277,15 +334,19 @@ The site is 100 % **serverless**: no self-managed servers. All infrastructure is
 
 ## 5. Seguridad · Security
 
-- **No hay endpoints sensibles**. El único endpoint público es `POST /contacto` y solo crea registros (no lee, no modifica, no borra).
-- **CORS** restringe el origin (`https://www.jazzenlajungla.com` y `https://jazzenlajungla.com`).
-- **Validación servidor**: la Lambda re-valida todo lo que el frontend pretende haber validado. No confía en el cliente.
-- **DynamoDB**: solo accesible vía rol IAM de las Lambdas. No tiene endpoint público.
-- **S3**: bloqueado a tráfico público; solo CloudFront vía OAC.
-- **HTTPS forzado** en CloudFront.
-- **Sin secretos en el repo**. El único valor "sensible" en el frontend (la URL del API Gateway) es por definición público al estar en el HTML que cualquier visitante puede ver.
+- **Endpoints públicos reducidos al mínimo**. La única superficie de escritura es `POST /contacto`, que solo crea registros (no lee, no modifica, no borra). CORS restringe el origin a `https://www.jazzenlajungla.com` y `https://jazzenlajungla.com`, no `*`.
+- **Validación en servidor**. La Lambda re-valida todo lo que el frontend pretende haber validado: regex de email, edad ≥ 18, longitudes, valores permitidos de `edition` y `accommodation`, aceptación de términos. El cliente no es confiable.
+- **IAM con mínimo privilegio**. Cada Lambda tiene únicamente las acciones estrictamente necesarias, con `Resource` acotado a la tabla, la identidad SES y el log group concretos. Ver `Sección 3.4` y `3.5`.
+- **DynamoDB privada**. Solo accesible vía rol IAM de las Lambdas. Sin endpoint público, sin acceso desde el frontend.
+- **S3 privado**. Bloqueado a tráfico público; solo CloudFront vía OAC.
+- **HTTPS forzado** en CloudFront (Viewer Protocol Policy: *Redirect HTTP to HTTPS*).
+- **Sin secretos en el repositorio**. El único valor "sensible" en el frontend (la URL del API Gateway) es por definición público al estar en el HTML que cualquier visitante puede leer.
 
-**Pendiente**: rate limiting más fino en API Gateway si aparece abuso (actualmente el default es generoso).
+**Riesgos conocidos y mitigaciones planificadas**:
+
+- **Abuso del formulario**. `POST /contacto` no tiene rate limiting, CAPTCHA ni honeypot. El throttling por defecto de API Gateway (10 000 req/s burst, 5 000 sostenido) protege frente a floods obvios, pero no evita que un bot escriba miles de registros basura durante horas. Plan (roadmap): honeypot oculto en el formulario, regla de rate limiting por IP en API Gateway o WAF, y alarma de CloudWatch sobre picos anómalos de invocación.
+- **Sin DLQ ni alarmas**. La Lambda del reporte diario falla en silencio ante errores transitorios de SES o DynamoDB. Plan: DLQ (SQS) + alarma de CloudWatch sobre `Errors > 0`.
+- **`table.scan()` en el reporte**. Recorre la tabla entera. Aceptable a la escala actual (decenas de items) pero se convierte en O(n) sobre todo el histórico a mayor volumen. Plan: GSI `estado-fecha_creacion-index` y sustituir por `query` filtrando `estado = pendiente`.
 
 ---
 
@@ -365,8 +426,12 @@ Reconstrucción completa en una cuenta AWS vacía: ~30 minutos siguiendo la secc
 
 ## 9. Roadmap técnico · Technical roadmap
 
-Ver el roadmap completo en el [README](./README.md#roadmap). Aquí los detalles técnicos de los items más relevantes:
+Ver el roadmap completo en el [README](./README.md#roadmap). Aquí los detalles técnicos de los ítems más relevantes:
 
+- **Protección anti-abuso**: (1) campo honeypot en el formulario (`<input name="website" hidden>`) que si viene relleno provoca 200 sin escribir en DynamoDB; (2) throttling por IP a nivel de API Gateway (usage plan con API key) o regla WAF con `RateBasedStatement` de 100 req / 5 min por IP; (3) alarma de CloudWatch sobre `Count` de invocaciones anómalo (p. ej. > 50/min); (4) rechazo temprano en la Lambda de User-Agents conocidos de scraping.
+- **Migración a SSM Parameter Store**: mover las env vars actuales (`DYNAMO_TABLE`, `SES_SENDER`, `SES_RECIPIENTS`, `SES_REGION`) a parámetros `/jjl/<env>/*` en SSM. Las Lambdas leen los parámetros al arranque (fuera del handler para aprovechar el contenedor caliente). IAM añade `ssm:GetParameters` con `Resource` acotado al path.
+- **Tests + CI**: `pytest` cubriendo `calcular_edad`, validaciones de `lambda_handler`, `EMAIL_REGEX`, `generar_csv` y `contar_estadisticas`. Workflow de GitHub Actions con matriz Python 3.14, cache de pip y badge en el README.
+- **DLQ y alarmas**: configurar `DeadLetterConfig` en ambas Lambdas apuntando a una cola SQS `jjl-lambda-dlq`. Alarma de CloudWatch sobre `Errors > 0` en ventana de 5 minutos, notificando a un topic SNS suscrito a los emails de los socios.
+- **CSV diferencial**: crear GSI `estado-fecha_creacion-index` sobre la tabla y sustituir el `scan` del reporte diario por `query` filtrando `estado = pendiente`. Reduce coste y acota el email a lo accionable.
 - **Estado de solicitudes editable sin tocar DynamoDB**: la opción preferente es enlaces firmados HMAC en el email del reporte. El email lleva un enlace `https://api.../estado?id=<uuid>&token=<hmac>&status=contactada` por cada solicitud. La Lambda valida `HMAC(secret, id+status+exp)`, muestra una página de confirmación y al click final hace `UpdateItem` con `SET estado = :s`.
 - **SES production access**: enviar request en la consola de SES con caso de uso (notificaciones transaccionales a clientes que se han inscrito), volumen estimado (< 100/día) y proceso de manejo de bounces/complaints (suscripción a SNS topic + Lambda que marca emails inválidos).
-- **CSV diferencial**: cambiar el `scan` por `query` con GSI `estado-fecha_creacion-index` filtrando `estado = pendiente`. Reduce coste y hace el email procesable.

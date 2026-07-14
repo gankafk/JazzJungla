@@ -1,12 +1,17 @@
 import json
+import os
 import boto3
 import uuid
 import re
 from datetime import datetime, date, timezone
 from botocore.exceptions import ClientError
 
+# Configuración vía variables de entorno de Lambda (con valores por defecto
+# para no romper el entorno actual si no se establecen).
+TABLE_NAME = os.environ.get('DYNAMO_TABLE', 'Contactos-jazzenlajungla')
+
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('Contactos-jazzenlajungla')
+table = dynamodb.Table(TABLE_NAME)
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
 
